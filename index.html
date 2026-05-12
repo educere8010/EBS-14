@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>수능특강 EBS-14 | 에듀케레 영수학원</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Noto Sans KR',sans-serif;background:#f5f5f0;color:#222;line-height:1.7}
+  .layout{display:flex;min-height:100vh}
+
+  /* Sidebar */
+  .sidebar{width:280px;background:#1a2744;color:#fff;padding:30px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;transition:transform 0.3s}
+  .sidebar h1{font-family:'Playfair Display',serif;font-size:22px;color:#c8a84b;margin-bottom:6px;letter-spacing:1px}
+  .sidebar .sub{font-size:13px;color:#cfd2da;margin-bottom:4px}
+  .sidebar .academy{font-size:14px;color:#fff;font-weight:600;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid #2d3a5e}
+  .sidebar ul{list-style:none}
+  .sidebar li{margin-bottom:10px}
+  .sidebar a{color:#e8e8e8;text-decoration:none;display:block;padding:12px 14px;border-radius:6px;font-size:14px;transition:all 0.2s;cursor:pointer;border-left:3px solid transparent}
+  .sidebar a:hover{background:#2d3a5e;color:#fff}
+  .sidebar a.active{background:#c8a84b;color:#1a2744;font-weight:600;border-left-color:#fff}
+  .sidebar .num{font-family:'EB Garamond',serif;font-weight:600;margin-right:8px;color:#c8a84b}
+  .sidebar a.active .num{color:#1a2744}
+  .sidebar .contact{margin-top:30px;padding-top:20px;border-top:1px solid #2d3a5e;font-size:12px;color:#cfd2da;line-height:1.6}
+
+  .toggle-btn{display:none;position:fixed;top:15px;left:15px;z-index:1000;background:#1a2744;color:#c8a84b;border:none;padding:10px 14px;border-radius:6px;font-size:18px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+
+  /* Main */
+  .main{flex:1;margin-left:280px;padding:40px 50px;max-width:1100px}
+  .panel{display:none}
+  .panel.active{display:block;animation:fadeIn 0.3s}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .passage-header{border-bottom:3px solid #1a2744;padding-bottom:18px;margin-bottom:28px}
+  .passage-header .pid{font-family:'EB Garamond',serif;font-size:15px;color:#c8a84b;font-weight:600;letter-spacing:2px}
+  .passage-header h2{font-family:'Playfair Display',serif;font-size:28px;color:#1a2744;margin-top:6px}
+  .passage-header .ko{font-size:14px;color:#666;margin-top:4px}
+
+  /* Tabs */
+  .tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:24px;border-bottom:2px solid #e0ddd0}
+  .tab{padding:10px 16px;background:none;border:none;font-family:'Noto Sans KR',sans-serif;font-size:14px;color:#666;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s;font-weight:500}
+  .tab:hover{color:#1a2744}
+  .tab.active{color:#1a2744;border-bottom-color:#c8a84b;font-weight:600}
+
+  .pane{display:none;padding:20px 0}
+  .pane.active{display:block;animation:fadeIn 0.3s}
+
+  /* Full passage box */
+  .full-passage{background:#fdfcf7;border:2px solid #1a2744;border-radius:8px;padding:28px 32px;font-family:'EB Garamond',serif;font-size:17px;line-height:1.9;color:#222;margin-bottom:20px}
+  .full-passage .snum{font-weight:700;color:#c8a84b;margin-right:4px}
+
+  /* Sentence analysis */
+  .sent{margin-bottom:30px;padding-bottom:24px;border-bottom:1px dashed #d0cdb8}
+  .sent:last-child{border-bottom:none}
+  .sent-en{background:#fafaf2;border-left:4px solid #2E75B6;border:1px solid #d8d4c0;border-left:4px solid #2E75B6;padding:14px 18px;font-family:'EB Garamond',serif;font-size:16px;line-height:1.8;margin-bottom:12px;border-radius:0 4px 4px 0}
+  .sent-en .badge{display:inline-block;background:#1a2744;color:#c8a84b;font-family:'EB Garamond',serif;font-weight:700;padding:1px 9px;border-radius:50%;font-size:14px;margin-right:8px}
+  .chunk{background:#fff8e8;padding:12px 16px;border-left:3px solid #c8a84b;margin-bottom:10px;font-size:14px;line-height:1.8;color:#5a4e1f}
+  .chunk b{color:#1a2744}
+  .ko-trans{padding:10px 14px;background:#f3f0e6;border-radius:4px;font-size:14px;color:#333;margin-bottom:12px}
+  .gram-list{list-style:none;padding-left:0}
+  .gram-list li{padding:8px 0;border-bottom:1px solid #ece8d8;font-size:13.5px;line-height:1.7}
+  .gram-list li:last-child{border-bottom:none}
+  .gram-list .item{color:#7F6000;background:#FFF2CC;padding:2px 6px;border-radius:3px;font-weight:600;margin-right:6px}
+  .gram-list .ex{color:#1F4E79;font-family:'EB Garamond',serif;font-style:italic}
+  .gram-list .pt{color:#444;display:block;margin-top:4px;font-size:13px}
+
+  /* Vocab */
+  .vocab-list{list-style:none}
+  .vocab-item{padding:14px 18px;background:#fff;border:1px solid #e2efda;border-left:4px solid #375623;margin-bottom:10px;border-radius:4px;display:flex;flex-wrap:wrap;gap:14px;align-items:baseline}
+  .vocab-word{font-family:'EB Garamond',serif;font-weight:700;font-size:18px;color:#1F4E79;min-width:160px}
+  .vocab-pos{font-style:italic;color:#666;font-size:13px;min-width:50px}
+  .vocab-mean{color:#222;font-size:14px;flex:1;min-width:200px}
+  .vocab-deriv{font-size:13px;color:#375623;background:#E2EFDA;padding:3px 8px;border-radius:3px;font-family:'EB Garamond',serif}
+
+  /* Translation */
+  .trans-box{background:#fff;border:1px solid #ddd;border-left:4px solid #1a2744;padding:24px 28px;font-size:15px;line-height:2;color:#222;border-radius:0 6px 6px 0}
+
+  /* Topic */
+  .topic-box{margin-bottom:18px}
+  .topic-box h3{font-size:15px;color:#1F4E79;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid #c8a84b;display:inline-block}
+  .topic-box .content{padding:12px 16px;background:#fafaf2;border-radius:4px;font-size:14.5px;line-height:1.9}
+  .struct-list{list-style:none;counter-reset:s}
+  .struct-list li{counter-increment:s;padding:10px 14px 10px 44px;position:relative;background:#fafaf2;margin-bottom:8px;border-radius:4px;font-size:14px;line-height:1.7}
+  .struct-list li:before{content:counter(s);position:absolute;left:12px;top:10px;background:#1a2744;color:#c8a84b;width:24px;height:24px;border-radius:50%;text-align:center;font-family:'EB Garamond',serif;font-weight:700;font-size:13px;line-height:24px}
+
+  /* Background */
+  .bg-section{margin-bottom:20px}
+  .bg-section h3{font-size:15px;color:#1F4E79;margin-bottom:10px;padding:6px 12px;background:#FFF2CC;border-left:4px solid #c8a84b;border-radius:0 4px 4px 0;display:inline-block}
+  .bg-section p{padding:10px 16px;font-size:14px;line-height:1.9;color:#333}
+
+  /* Quiz */
+  .quiz{background:#fff;border:1px solid #ddd;padding:20px 24px;border-radius:6px;margin-bottom:20px;border-left:4px solid #2E75B6}
+  .quiz-num{display:inline-block;background:#1a2744;color:#c8a84b;padding:3px 10px;border-radius:3px;font-family:'EB Garamond',serif;font-weight:700;font-size:13px;margin-bottom:10px}
+  .quiz-q{font-size:14.5px;line-height:1.8;margin-bottom:14px;color:#222;font-weight:500}
+  .quiz-q .blank{display:inline-block;border-bottom:2px solid #1a2744;min-width:80px;padding:0 8px;background:#FFF2CC}
+  .quiz-passage{background:#fafaf2;padding:12px 16px;border-radius:4px;font-family:'EB Garamond',serif;font-size:14px;line-height:1.8;margin:10px 0;border-left:3px solid #c8a84b}
+  .quiz-passage u{text-decoration:underline;text-decoration-color:#c8a84b;text-decoration-thickness:2px;font-weight:600;color:#1F4E79}
+  .opts{list-style:none}
+  .opts li{padding:10px 14px;margin-bottom:6px;background:#fafaf2;border:1px solid #e0ddd0;border-radius:4px;cursor:pointer;font-size:14px;line-height:1.6;transition:all 0.15s;display:flex;align-items:center;gap:10px}
+  .opts li:hover{background:#fff8e8;border-color:#c8a84b}
+  .opts li.correct{background:#E2EFDA;border-color:#375623;color:#375623}
+  .opts li.wrong{background:#fadddd;border-color:#c44;color:#a33}
+  .opts li .onum{font-family:'EB Garamond',serif;font-weight:700;color:#1a2744;min-width:24px}
+  .fb{display:none;margin-top:10px;padding:10px 14px;border-radius:4px;font-size:13.5px;line-height:1.7}
+  .fb.show{display:block}
+  .fb.ok{background:#E2EFDA;color:#375623;border-left:3px solid #375623}
+  .fb.ng{background:#fadddd;color:#a33;border-left:3px solid #c44}
+  .reset-btn{margin-top:10px;padding:6px 12px;background:#1a2744;color:#c8a84b;border:none;border-radius:4px;cursor:pointer;font-size:12px;font-family:'Noto Sans KR',sans-serif}
+  .reset-btn:hover{background:#2d3a5e}
+
+  /* Essay */
+  .essay{background:#fff;border:1px solid #ddd;padding:20px 24px;border-radius:6px;margin-bottom:20px;border-left:4px solid #c8a84b}
+  .essay-num{display:inline-block;background:#c8a84b;color:#1a2744;padding:3px 10px;border-radius:3px;font-family:'Noto Sans KR',sans-serif;font-weight:700;font-size:13px;margin-bottom:10px}
+  .essay-q{font-size:14.5px;line-height:1.8;margin-bottom:10px;color:#222;font-weight:500}
+  .essay-cond{font-size:13px;color:#7F6000;background:#FFF2CC;padding:8px 12px;border-radius:4px;margin-bottom:12px;line-height:1.6}
+  .essay textarea{width:100%;min-height:90px;padding:12px 14px;border:1px solid #d0cdb8;border-radius:4px;font-family:'EB Garamond','Noto Sans KR',serif;font-size:14.5px;line-height:1.7;resize:vertical;background:#fdfcf7}
+  .essay textarea:focus{outline:none;border-color:#c8a84b;background:#fff}
+  .essay-btns{margin-top:10px;display:flex;gap:8px}
+  .submit-btn{padding:8px 16px;background:#1a2744;color:#c8a84b;border:none;border-radius:4px;cursor:pointer;font-size:13px;font-weight:600;font-family:'Noto Sans KR',sans-serif}
+  .submit-btn:hover{background:#2d3a5e}
+  .ans-btn{padding:8px 16px;background:#fff;color:#1a2744;border:1px solid #1a2744;border-radius:4px;cursor:pointer;font-size:13px;font-family:'Noto Sans KR',sans-serif}
+  .ans-btn:hover{background:#1a2744;color:#c8a84b}
+  .essay-ans{display:none;margin-top:12px;padding:14px 16px;background:#E2EFDA;border-left:3px solid #375623;border-radius:4px;font-size:14px;line-height:1.8;color:#1a3a14}
+  .essay-ans.show{display:block}
+  .essay-ans b{color:#375623;display:block;margin-bottom:6px;font-size:13px}
+  .user-ans-display{display:none;margin-top:10px;padding:12px 14px;background:#fafaf2;border:1px solid #d8d4c0;border-radius:4px;font-size:13.5px;line-height:1.7;color:#444}
+  .user-ans-display.show{display:block}
+  .user-ans-display b{color:#1F4E79;display:block;margin-bottom:4px;font-size:12px}
+
+  @media(max-width:900px){
+    .sidebar{transform:translateX(-100%);z-index:999}
+    .sidebar.open{transform:translateX(0)}
+    .main{margin-left:0;padding:60px 20px 30px}
+    .toggle-btn{display:block}
+    .passage-header h2{font-size:22px}
+  }
+</style>
+</head>
+<body>
+
+<button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h1>EduCare</h1>
+    <div class="sub">수능특강 EBS-14</div>
+    <div class="academy">에듀케레 영수학원</div>
+    <ul>
+      <li><a id="nav-1" class="active" onclick="showPassage(1, this)"><span class="num">14-G</span>Client Involvement in Design</a></li>
+      <li><a id="nav-2" onclick="showPassage(2, this)"><span class="num">14-1</span>Experiences vs. Meanings</a></li>
+      <li><a id="nav-3" onclick="showPassage(3, this)"><span class="num">14-2</span>The Reality of Science Practice</a></li>
+      <li><a id="nav-4" onclick="showPassage(4, this)"><span class="num">14-3</span>The Hidden Role of Music Direction</a></li>
+      <li><a id="nav-5" onclick="showPassage(5, this)"><span class="num">14-4</span>Prior Knowledge as X-factor</a></li>
+    </ul>
+    <div class="contact">
+      에듀케레 영수학원<br>
+      경남 양산시 물금읍<br>
+      Tel. 055-363-8010
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ============ Passage 1: 14-G ============ -->
+    <div class="panel active" id="p1">
+      <div class="passage-header">
+        <div class="pid">EBS-14 · Gateway</div>
+        <h2>Client and User Involvement in Design</h2>
+        <div class="ko">디자인 과정에서의 의뢰인 및 사용자 참여의 중요성</div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('p1','t1-full',this)">① 전문</button>
+        <button class="tab" onclick="showTab('p1','t1-sent',this)">② 문장분석</button>
+        <button class="tab" onclick="showTab('p1','t1-vocab',this)">③ 핵심단어</button>
+        <button class="tab" onclick="showTab('p1','t1-trans',this)">④ 전문해석</button>
+        <button class="tab" onclick="showTab('p1','t1-topic',this)">⑤ 주제·요지</button>
+        <button class="tab" onclick="showTab('p1','t1-bg',this)">⑥ 배경지식</button>
+        <button class="tab" onclick="showTab('p1','t1-quiz',this)">⑦ 변형문제</button>
+      </div>
+
+      <!-- ① 전문 -->
+      <div class="pane active" id="t1-full">
+        <div class="full-passage">
+          <span class="snum">①</span>Giving clients sufficient opportunity to react to your designs while in progress is a key to professional success.
+          <span class="snum">②</span>Similarly, involving prospective building users as well as clients is even more valuable in the long run.
+          <span class="snum">③</span>Say your client is a large corporation, such as a health care provider.
+          <span class="snum">④</span>While the hospital administration may serve as your client, no doubt the perspectives of administration personnel will differ significantly from those of doctors, interns, residents, nurses, and other medical staff who use the building regularly.
+          <span class="snum">⑤</span>In addition, the experiences of patients and visitors who use the building irregularly, often as a result of life-threatening emergencies, are altogether different as well.
+          <span class="snum">⑥</span>Understanding how each type of user experiences the current medical environment as well as how each reacts to your prospective designs inevitably produces a better building.
+          <span class="snum">⑦</span>People are likely to be more satisfied with a new building or addition if they have been consulted in the design process.
+          <span class="snum">⑧</span>For a large institution, this can translate into increased productivity on the job, reduced absenteeism, less turnover, and lower costs.
+        </div>
+      </div>
+
+      <!-- ② 문장분석 -->
+      <div class="pane" id="t1-sent">
+        <!-- 문장 1 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">①</span>Giving clients sufficient opportunity to react to your designs while in progress is a key to professional success.</div>
+          <div class="chunk">Giving clients sufficient opportunity / 의뢰인에게 충분한 기회를 주는 것은 / to react to your designs / 당신의 디자인에 반응할 / while in progress / 진행 중인 동안 / is a key / 핵심이다 / to professional success. / 전문가적 성공의</div>
+          <div class="ko-trans">진행 중인 디자인에 의뢰인이 반응할 충분한 기회를 주는 것은 전문가로서 성공의 핵심이다.</div>
+          <ul class="gram-list">
+            <li><span class="item">동명사 주어</span><span class="ex">Giving ... is a key</span><span class="pt">★ 동명사구 주어는 단수 취급 → 동사 is. 수일치 출제 빈출.</span></li>
+            <li><span class="item">to부정사 형용사적 용법</span><span class="ex">opportunity to react</span><span class="pt">★ '~할 기회'의 의미로 명사 opportunity를 수식. 빈출 명사+to V.</span></li>
+            <li><span class="item">분사구문 (생략형)</span><span class="ex">while (they are) in progress</span><span class="pt">★ while 뒤 「주어+be동사」 생략. 부사절 축약 어법 문제.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 2 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">②</span>Similarly, involving prospective building users as well as clients is even more valuable in the long run.</div>
+          <div class="chunk">Similarly, / 마찬가지로 / involving prospective building users / 미래의 건물 사용자를 참여시키는 것은 / as well as clients / 의뢰인뿐 아니라 / is even more valuable / 훨씬 더 가치 있다 / in the long run. / 장기적으로</div>
+          <div class="ko-trans">마찬가지로, 의뢰인뿐 아니라 미래의 건물 사용자를 참여시키는 것이 장기적으로는 훨씬 더 가치 있다.</div>
+          <ul class="gram-list">
+            <li><span class="item">동명사 주어</span><span class="ex">involving ... is</span><span class="pt">★ 단수 동사 is와의 수일치. as well as 뒤 명사는 주어에 영향 없음.</span></li>
+            <li><span class="item">비교급 강조</span><span class="ex">even more valuable</span><span class="pt">★ even/much/far/still/a lot은 비교급 강조. very 불가 (어법 함정).</span></li>
+            <li><span class="item">B as well as A</span><span class="ex">users as well as clients</span><span class="pt">★ 'A뿐 아니라 B도'. 강조의 중심은 B(앞쪽 명사).</span></li>
+          </ul>
+        </div>
+        <!-- 문장 3 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">③</span>Say your client is a large corporation, such as a health care provider.</div>
+          <div class="chunk">Say / 가정해 보라 / your client is a large corporation, / 당신의 의뢰인이 큰 기업이라고 / such as a health care provider. / 의료 서비스 제공자 같은</div>
+          <div class="ko-trans">당신의 의뢰인이 의료 서비스 제공자 같은 큰 기업이라고 가정해 보자.</div>
+          <ul class="gram-list">
+            <li><span class="item">명령문 (Say = Suppose)</span><span class="ex">Say your client is ...</span><span class="pt">★ Say는 '예를 들어 ~라고 해 보자'의 뜻. 예시 도입 표현.</span></li>
+            <li><span class="item">that 생략</span><span class="ex">Say (that) your client is</span><span class="pt">★ say 뒤 명사절 접속사 that 생략.</span></li>
+            <li><span class="item">such as 예시</span><span class="ex">such as a health care provider</span><span class="pt">★ 예시 제시. for example과 호환 가능.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 4 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">④</span>While the hospital administration may serve as your client, no doubt the perspectives of administration personnel will differ significantly from those of doctors, interns, residents, nurses, and other medical staff who use the building regularly.</div>
+          <div class="chunk">While the hospital administration may serve / 병원 행정부가 ~의 역할을 할 수 있지만 / as your client, / 당신의 의뢰인으로서 / no doubt / 의심할 여지 없이 / the perspectives of administration personnel / 행정 직원의 관점은 / will differ significantly / 상당히 다를 것이다 / from those of doctors, interns, residents, nurses, and other medical staff / 의사, 인턴, 레지던트, 간호사와 다른 의료진의 관점과 / who use the building regularly. / 그 건물을 정기적으로 사용하는</div>
+          <div class="ko-trans">병원 행정부가 의뢰인 역할을 할 수는 있지만, 행정 직원의 관점은 그 건물을 정기적으로 사용하는 의사, 인턴, 레지던트, 간호사, 그리고 다른 의료진의 관점과 분명히 상당히 다를 것이다.</div>
+          <ul class="gram-list">
+            <li><span class="item">양보 접속사 While</span><span class="ex">While ... may serve</span><span class="pt">★ '비록 ~이지만'. Although과 호환. 시간 의미 아님 (어법 함정).</span></li>
+            <li><span class="item">지시대명사 those</span><span class="ex">those of doctors</span><span class="pt">★ those = the perspectives. 비교 대상 반복 회피. 수능 빈출.</span></li>
+            <li><span class="item">주격 관계대명사 who</span><span class="ex">staff who use the building</span><span class="pt">★ 선행사 medical staff(복수)에 맞춰 use(복수동사).</span></li>
+            <li><span class="item">no doubt (부사)</span><span class="ex">no doubt the perspectives ...</span><span class="pt">★ '의심할 여지 없이' = certainly. 문장 부사로 사용.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 5 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑤</span>In addition, the experiences of patients and visitors who use the building irregularly, often as a result of life-threatening emergencies, are altogether different as well.</div>
+          <div class="chunk">In addition, / 게다가 / the experiences of patients and visitors / 환자와 방문객의 경험은 / who use the building irregularly, / 그 건물을 비정기적으로 사용하는 / often as a result of life-threatening emergencies, / 종종 생명을 위협하는 응급 상황의 결과로 / are altogether different / 완전히 다르다 / as well. / 또한</div>
+          <div class="ko-trans">게다가, 종종 생명을 위협하는 응급 상황의 결과로 그 건물을 비정기적으로 이용하는 환자와 방문객의 경험 또한 완전히 다르다.</div>
+          <ul class="gram-list">
+            <li><span class="item">주어-동사 수일치</span><span class="ex">the experiences ... are</span><span class="pt">★ 주어 핵심은 experiences(복수) → are. 중간 수식어구에 속지 말 것.</span></li>
+            <li><span class="item">주격 관계대명사 who</span><span class="ex">patients and visitors who use</span><span class="pt">★ 선행사 patients and visitors(복수) → use.</span></li>
+            <li><span class="item">altogether (강조부사)</span><span class="ex">altogether different</span><span class="pt">★ '완전히, 전적으로'. completely와 동의어.</span></li>
+            <li><span class="item">분사 life-threatening</span><span class="ex">life-threatening emergencies</span><span class="pt">★ 명사+동사ing 복합형용사 = '~을 위협하는'. 능동의 의미.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 6 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑥</span>Understanding how each type of user experiences the current medical environment as well as how each reacts to your prospective designs inevitably produces a better building.</div>
+          <div class="chunk">Understanding / 이해하는 것은 / how each type of user experiences / 각 유형의 사용자가 어떻게 경험하는지를 / the current medical environment / 현재의 의료 환경을 / as well as how each reacts / 각자가 어떻게 반응하는지뿐 아니라 / to your prospective designs / 당신의 예정된 디자인에 대해 / inevitably produces a better building. / 필연적으로 더 나은 건물을 만들어낸다</div>
+          <div class="ko-trans">각 유형의 사용자가 현재의 의료 환경을 어떻게 경험하는지, 그리고 당신의 예정된 디자인에 어떻게 반응하는지를 이해하는 것은 필연적으로 더 나은 건물을 만들어낸다.</div>
+          <ul class="gram-list">
+            <li><span class="item">동명사 주어 + 단수 동사</span><span class="ex">Understanding ... produces</span><span class="pt">★ 긴 동명사구 주어, 핵심 동사 produces(단수). 수일치 빈출.</span></li>
+            <li><span class="item">간접의문문 how절</span><span class="ex">how each type of user experiences</span><span class="pt">★ how + 주어 + 동사 어순. 명사절로 동사 Understanding의 목적어.</span></li>
+            <li><span class="item">B as well as A 병치</span><span class="ex">how ... experiences ... as well as how ... reacts</span><span class="pt">★ 두 how절이 병치 구조. 병렬성 어법 문제 빈출.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 7 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑦</span>People are likely to be more satisfied with a new building or addition if they have been consulted in the design process.</div>
+          <div class="chunk">People are likely / 사람들은 ~할 가능성이 있다 / to be more satisfied / 더 만족할 / with a new building or addition / 새 건물이나 증축에 대해 / if they have been consulted / 만약 그들이 의견을 들어주었다면 / in the design process. / 디자인 과정에서</div>
+          <div class="ko-trans">사람들은 디자인 과정에서 자신들의 의견이 반영되었다면 새 건물이나 증축물에 더 만족할 가능성이 있다.</div>
+          <ul class="gram-list">
+            <li><span class="item">be likely to V</span><span class="ex">are likely to be ... satisfied</span><span class="pt">★ '~할 가능성이 있다'. 빈출 표현.</span></li>
+            <li><span class="item">감정 분사 satisfied</span><span class="ex">be more satisfied</span><span class="pt">★ 사람 주어 + satisfied(과거분사). satisfying(능동, 사물)과 구분.</span></li>
+            <li><span class="item">현재완료 수동태</span><span class="ex">have been consulted</span><span class="pt">★ if절 안에서 완료된 일이 영향을 미치는 경우. 시제+태 동시 출제.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 8 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑧</span>For a large institution, this can translate into increased productivity on the job, reduced absenteeism, less turnover, and lower costs.</div>
+          <div class="chunk">For a large institution, / 큰 기관의 경우 / this can translate into / 이는 ~으로 이어질 수 있다 / increased productivity on the job, / 직무에서의 생산성 증가 / reduced absenteeism, / 결근 감소 / less turnover, / 이직률 감소 / and lower costs. / 비용 절감으로</div>
+          <div class="ko-trans">대규모 기관의 경우 이는 직무 생산성 증가, 결근 감소, 이직률 감소, 그리고 비용 절감으로 이어질 수 있다.</div>
+          <ul class="gram-list">
+            <li><span class="item">translate into</span><span class="ex">translate into increased productivity</span><span class="pt">★ '~로 이어지다, ~로 전환되다'. result in과 유사.</span></li>
+            <li><span class="item">과거분사 형용사</span><span class="ex">increased productivity, reduced absenteeism</span><span class="pt">★ 명사 앞 과거분사 = 수동/완료 의미의 형용사.</span></li>
+            <li><span class="item">병렬 구조 (4중)</span><span class="ex">productivity, absenteeism, turnover, and costs</span><span class="pt">★ 네 개의 명사구가 and로 병치. 어법 빈출.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ③ 핵심단어 -->
+      <div class="pane" id="t1-vocab">
+        <ul class="vocab-list">
+          <li class="vocab-item"><span class="vocab-word">sufficient</span><span class="vocab-pos">adj.</span><span class="vocab-mean">충분한</span><span class="vocab-deriv">sufficiency (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">in progress</span><span class="vocab-pos">phr.</span><span class="vocab-mean">진행 중인</span><span class="vocab-deriv">progressive (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">prospective</span><span class="vocab-pos">adj.</span><span class="vocab-mean">미래의, 장차 ~이 될</span><span class="vocab-deriv">prospect (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">in the long run</span><span class="vocab-pos">phr.</span><span class="vocab-mean">장기적으로</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">corporation</span><span class="vocab-pos">n.</span><span class="vocab-mean">기업, 법인</span><span class="vocab-deriv">corporate (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">administration</span><span class="vocab-pos">n.</span><span class="vocab-mean">행정(부), 관리</span><span class="vocab-deriv">administer (v.), administrative (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">perspective</span><span class="vocab-pos">n.</span><span class="vocab-mean">관점, 시각</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">significantly</span><span class="vocab-pos">adv.</span><span class="vocab-mean">상당히, 현저히</span><span class="vocab-deriv">significant (adj.), significance (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">irregularly</span><span class="vocab-pos">adv.</span><span class="vocab-mean">비정기적으로</span><span class="vocab-deriv">irregular (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">life-threatening</span><span class="vocab-pos">adj.</span><span class="vocab-mean">생명을 위협하는</span><span class="vocab-deriv">threat (n.), threaten (v.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">altogether</span><span class="vocab-pos">adv.</span><span class="vocab-mean">완전히, 전적으로</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">inevitably</span><span class="vocab-pos">adv.</span><span class="vocab-mean">필연적으로, 불가피하게</span><span class="vocab-deriv">inevitable (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">consult</span><span class="vocab-pos">v.</span><span class="vocab-mean">상의하다, 의견을 구하다</span><span class="vocab-deriv">consultation (n.), consultant (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">translate into</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~으로 이어지다, ~로 전환되다</span><span class="vocab-deriv">translation (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">absenteeism</span><span class="vocab-pos">n.</span><span class="vocab-mean">상습적 결근</span><span class="vocab-deriv">absent (adj.), absence (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">turnover</span><span class="vocab-pos">n.</span><span class="vocab-mean">이직률, 매출액</span><span class="vocab-deriv">—</span></li>
+        </ul>
+      </div>
+
+      <!-- ④ 전문해석 -->
+      <div class="pane" id="t1-trans">
+        <div class="trans-box">
+          진행 중인 디자인에 의뢰인이 반응할 충분한 기회를 주는 것은 전문가로서 성공의 핵심이다. 마찬가지로, 의뢰인뿐 아니라 미래의 건물 사용자를 참여시키는 것이 장기적으로는 훨씬 더 가치 있다. 당신의 의뢰인이 의료 서비스 제공자 같은 큰 기업이라고 가정해 보자. 병원 행정부가 의뢰인 역할을 할 수는 있지만, 행정 직원의 관점은 그 건물을 정기적으로 사용하는 의사, 인턴, 레지던트, 간호사, 그리고 다른 의료진의 관점과 분명히 상당히 다를 것이다. 게다가, 종종 생명을 위협하는 응급 상황의 결과로 그 건물을 비정기적으로 이용하는 환자와 방문객의 경험 또한 완전히 다르다. 각 유형의 사용자가 현재의 의료 환경을 어떻게 경험하는지, 그리고 당신의 예정된 디자인에 어떻게 반응하는지를 이해하는 것은 필연적으로 더 나은 건물을 만들어낸다. 사람들은 디자인 과정에서 자신들의 의견이 반영되었다면 새 건물이나 증축물에 더 만족할 가능성이 있다. 대규모 기관의 경우 이는 직무 생산성 증가, 결근 감소, 이직률 감소, 그리고 비용 절감으로 이어질 수 있다.
+        </div>
+      </div>
+
+      <!-- ⑤ 주제·요지 -->
+      <div class="pane" id="t1-topic">
+        <div class="topic-box">
+          <h3>주제 (Topic)</h3>
+          <div class="content">건축 디자인 과정에서 의뢰인뿐 아니라 실제 건물 사용자를 참여시키는 것의 중요성</div>
+        </div>
+        <div class="topic-box">
+          <h3>요지 (Main Idea)</h3>
+          <div class="content">의뢰인은 물론 건물을 실제로 이용하는 다양한 사용자(직원, 환자, 방문객 등)의 관점과 경험을 디자인 과정에 반영하면 더 나은 건물이 만들어지고, 사용자 만족도가 높아져 생산성 증가·비용 절감 등 장기적 이익으로 이어진다.</div>
+        </div>
+        <div class="topic-box">
+          <h3>구조 흐름 (Structure)</h3>
+          <ol class="struct-list">
+            <li>도입: 디자인 진행 중 의뢰인의 반응 기회 제공이 성공의 핵심임을 제시</li>
+            <li>확장: 의뢰인을 넘어 미래 건물 사용자까지 참여시키는 것이 장기적으로 더 가치 있음</li>
+            <li>예시(병원): 행정부·의료진·환자·방문객의 관점이 모두 다름을 구체화</li>
+            <li>결론: 다양한 사용자 이해 → 더 나은 건물 → 만족도·생산성·비용 절감 효과</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- ⑥ 배경지식 -->
+      <div class="pane" id="t1-bg">
+        <div class="bg-section">
+          <h3>User-Centered Design (사용자 중심 설계)</h3>
+          <p>건축·제품 설계 분야에서 "사용자 중심 설계(UCD)"는 1980년대 이후 핵심 개념으로 자리 잡았다. 의뢰인의 요구만 반영한 디자인은 종종 실제 사용자에게는 불편한 결과를 낳는데, 이를 보완하기 위해 설계 초기부터 다양한 사용자 그룹의 의견을 수렴하는 'Post-Occupancy Evaluation(사용 후 평가)' 같은 방법이 도입되었다.</p>
+        </div>
+        <div class="bg-section">
+          <h3>Healthcare Architecture (의료 건축)</h3>
+          <p>병원 설계는 사용자가 가장 복잡한 건축 분야 중 하나이다. 행정 직원, 의료진(의사·간호사·인턴·레지던트), 환자, 보호자, 방문객까지 각기 다른 동선·요구·심리 상태를 가지며, 특히 응급실의 경우 생사와 직결되므로 공간 배치가 진료 효율과 환자 생존율에 직접적 영향을 준다. 'Evidence-Based Design(증거 기반 설계)'은 이를 데이터로 분석해 설계에 반영하는 접근법이다.</p>
+        </div>
+        <div class="bg-section">
+          <h3>참여 설계의 경영 효과</h3>
+          <p>본문 마지막에 언급된 '생산성 증가, 결근 감소, 이직률 감소, 비용 절감'은 조직심리학·노동경제학 연구에서 반복적으로 검증된 결과이다. 사용자가 자신의 작업 환경 설계에 참여했다고 느낄 때 '심리적 소유감(psychological ownership)'이 형성되어 업무 몰입도가 상승한다.</p>
+        </div>
+      </div>
+
+      <!-- ⑦ 변형문제 -->
+      <div class="pane" id="t1-quiz">
+        <!-- Q1 주제추론 -->
+        <div class="quiz">
+          <span class="quiz-num">1. 주제 추론</span>
+          <div class="quiz-q">다음 글의 주제로 가장 적절한 것은?</div>
+          <ul class="opts">
+            <li onclick="check('q1-1',this,false)"><span class="onum">①</span>병원 행정 시스템의 효율적 운영 방안</li>
+            <li onclick="check('q1-1',this,true)"><span class="onum">②</span>건축 디자인 과정에서 의뢰인과 실제 사용자 모두를 참여시키는 것의 가치</li>
+            <li onclick="check('q1-1',this,false)"><span class="onum">③</span>의료진과 행정 직원 간 갈등 해소의 필요성</li>
+            <li onclick="check('q1-1',this,false)"><span class="onum">④</span>생명을 위협하는 응급 상황에 대비한 병원 설계 기준</li>
+            <li onclick="check('q1-1',this,false)"><span class="onum">⑤</span>기업 이직률을 줄이기 위한 인사 관리 전략</li>
+          </ul>
+          <div class="fb" id="fb-q1-1"></div>
+          <button class="reset-btn" onclick="resetQuiz('q1-1')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q2 빈칸추론 -->
+        <div class="quiz">
+          <span class="quiz-num">2. 빈칸 추론</span>
+          <div class="quiz-q">다음 빈칸에 들어갈 말로 가장 적절한 것은?</div>
+          <div class="quiz-passage">Understanding how each type of user experiences the current medical environment as well as how each reacts to your prospective designs inevitably <span class="blank">_______</span>. People are likely to be more satisfied with a new building or addition if they have been consulted in the design process.</div>
+          <ul class="opts">
+            <li onclick="check('q1-2',this,false)"><span class="onum">①</span>reduces architectural costs</li>
+            <li onclick="check('q1-2',this,false)"><span class="onum">②</span>increases the workload of administrators</li>
+            <li onclick="check('q1-2',this,true)"><span class="onum">③</span>produces a better building</li>
+            <li onclick="check('q1-2',this,false)"><span class="onum">④</span>eliminates the need for client consultation</li>
+            <li onclick="check('q1-2',this,false)"><span class="onum">⑤</span>complicates the design process</li>
+          </ul>
+          <div class="fb" id="fb-q1-2"></div>
+          <button class="reset-btn" onclick="resetQuiz('q1-2')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q3 어법오류 -->
+        <div class="quiz">
+          <span class="quiz-num">3. 어법 오류 찾기</span>
+          <div class="quiz-q">다음 글의 밑줄 친 부분 중 어법상 틀린 것은?</div>
+          <div class="quiz-passage">Giving clients sufficient opportunity to react to your designs while in progress <u>①is</u> a key to professional success. Similarly, involving prospective building users as well as clients <u>②is</u> even more valuable in the long run. While the hospital administration may serve as your client, no doubt the perspectives of administration personnel will differ significantly from <u>③that</u> of doctors. Understanding how each type of user experiences the current medical environment <u>④inevitably</u> produces a better building. People are likely to be more <u>⑤satisfied</u> with a new building if they have been consulted.</div>
+          <ul class="opts">
+            <li onclick="check('q1-3',this,false)"><span class="onum">①</span>is</li>
+            <li onclick="check('q1-3',this,false)"><span class="onum">②</span>is</li>
+            <li onclick="check('q1-3',this,true)"><span class="onum">③</span>that</li>
+            <li onclick="check('q1-3',this,false)"><span class="onum">④</span>inevitably</li>
+            <li onclick="check('q1-3',this,false)"><span class="onum">⑤</span>satisfied</li>
+          </ul>
+          <div class="fb" id="fb-q1-3"></div>
+          <button class="reset-btn" onclick="resetQuiz('q1-3')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q4 내용불일치 -->
+        <div class="quiz">
+          <span class="quiz-num">4. 내용 불일치</span>
+          <div class="quiz-q">윗글의 내용과 일치하지 <u>않는</u> 것은?</div>
+          <ul class="opts">
+            <li onclick="check('q1-4',this,false)"><span class="onum">①</span>진행 중인 디자인에 의뢰인이 반응할 기회를 주는 것은 전문가적 성공의 핵심이다.</li>
+            <li onclick="check('q1-4',this,false)"><span class="onum">②</span>의뢰인뿐 아니라 미래 사용자를 참여시키는 것이 장기적으로 더 가치 있다.</li>
+            <li onclick="check('q1-4',this,false)"><span class="onum">③</span>병원 행정 직원과 의료진의 관점은 상당히 다를 수 있다.</li>
+            <li onclick="check('q1-4',this,true)"><span class="onum">④</span>환자와 방문객은 건물을 정기적으로 이용하므로 의료진과 경험이 유사하다.</li>
+            <li onclick="check('q1-4',this,false)"><span class="onum">⑤</span>디자인 참여는 생산성 증가와 비용 절감으로 이어질 수 있다.</li>
+          </ul>
+          <div class="fb" id="fb-q1-4"></div>
+          <button class="reset-btn" onclick="resetQuiz('q1-4')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q5 글의 순서 -->
+        <div class="quiz">
+          <span class="quiz-num">5. 글의 순서</span>
+          <div class="quiz-q">주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?</div>
+          <div class="quiz-passage">Giving clients sufficient opportunity to react to your designs while in progress is a key to professional success.<br><br>(A) While the hospital administration may serve as your client, no doubt the perspectives of administration personnel will differ significantly from those of doctors, interns, residents, nurses, and other medical staff who use the building regularly.<br><br>(B) Similarly, involving prospective building users as well as clients is even more valuable in the long run. Say your client is a large corporation, such as a health care provider.<br><br>(C) In addition, the experiences of patients and visitors who use the building irregularly, often as a result of life-threatening emergencies, are altogether different as well. Understanding how each type of user experiences the current medical environment inevitably produces a better building.</div>
+          <ul class="opts">
+            <li onclick="check('q1-5',this,false)"><span class="onum">①</span>(A) - (B) - (C)</li>
+            <li onclick="check('q1-5',this,false)"><span class="onum">②</span>(A) - (C) - (B)</li>
+            <li onclick="check('q1-5',this,true)"><span class="onum">③</span>(B) - (A) - (C)</li>
+            <li onclick="check('q1-5',this,false)"><span class="onum">④</span>(B) - (C) - (A)</li>
+            <li onclick="check('q1-5',this,false)"><span class="onum">⑤</span>(C) - (A) - (B)</li>
+          </ul>
+          <div class="fb" id="fb-q1-5"></div>
+          <button class="reset-btn" onclick="resetQuiz('q1-5')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- 서술형 1 -->
+        <div class="essay">
+          <span class="essay-num">서술형 1. 빈칸 요약</span>
+          <div class="essay-q">다음 빈칸 (A), (B)에 들어갈 말을 본문에서 찾아 쓰시오.</div>
+          <div class="essay-cond">조건: 본문의 단어를 그대로 활용할 것. (A)는 한 단어, (B)는 두 단어.</div>
+          <div class="quiz-passage">Involving not only clients but also (A) ________ building users in the design process leads to a better building and, in the long run, brings benefits such as increased productivity and (B) ________ ________.</div>
+          <textarea id="essay1-1" placeholder="(A): ________________  /  (B): ________________"></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay1-1')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans1-1')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay1-1"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans1-1"><b>모범답안</b>(A) prospective &nbsp; / &nbsp; (B) lower costs</div>
+        </div>
+
+        <!-- 서술형 2 -->
+        <div class="essay">
+          <span class="essay-num">서술형 2. 영작 서술</span>
+          <div class="essay-q">본문의 내용을 참고하여, 병원 건물 설계에서 행정 직원의 관점과 의료진의 관점이 왜 다른지 30단어 내외의 완전한 영어 문장으로 서술하시오.</div>
+          <div class="essay-cond">조건: ① 완전한 영어 문장으로 작성 ② 30단어 내외 ③ 'perspective', 'differ' 단어 포함</div>
+          <textarea id="essay1-2" placeholder="Write your answer in English..."></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay1-2')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans1-2')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay1-2"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans1-2"><b>모범답안</b>The perspective of administration personnel differs from that of medical staff because administrators manage operations, while doctors and nurses use the building regularly for direct patient care.</div>
+        </div>
+
+        <!-- 서술형 3 -->
+        <div class="essay">
+          <span class="essay-num">서술형 3. 한국어 서술</span>
+          <div class="essay-q">본문에서 사용자가 디자인 과정에 참여했을 때 대규모 기관이 얻을 수 있는 구체적인 이점 4가지를 본문에서 찾아 한국어로 모두 쓰시오.</div>
+          <div class="essay-cond">조건: ① 4가지 모두 쓸 것 ② 한국어로 서술 ③ 본문 마지막 문장 활용</div>
+          <textarea id="essay1-3" placeholder="① ____________   ② ____________   ③ ____________   ④ ____________"></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay1-3')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans1-3')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay1-3"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans1-3"><b>모범답안</b>① 직무에서의 생산성 증가 &nbsp; ② 결근 감소 &nbsp; ③ 이직률 감소 &nbsp; ④ 비용 절감</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ Passage 2: 14-1 ============ -->
+    <div class="panel" id="p2">
+      <div class="passage-header">
+        <div class="pid">EBS-14 · Passage 1</div>
+        <h2>Sharing Experiences vs. Sharing Meanings</h2>
+        <div class="ko">경험을 공유하는 것과 의미를 공유하는 것의 차이</div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('p2','t2-full',this)">① 전문</button>
+        <button class="tab" onclick="showTab('p2','t2-sent',this)">② 문장분석</button>
+        <button class="tab" onclick="showTab('p2','t2-vocab',this)">③ 핵심단어</button>
+        <button class="tab" onclick="showTab('p2','t2-trans',this)">④ 전문해석</button>
+        <button class="tab" onclick="showTab('p2','t2-topic',this)">⑤ 주제·요지</button>
+        <button class="tab" onclick="showTab('p2','t2-bg',this)">⑥ 배경지식</button>
+        <button class="tab" onclick="showTab('p2','t2-quiz',this)">⑦ 변형문제</button>
+      </div>
+
+      <!-- ① 전문 -->
+      <div class="pane active" id="t2-full">
+        <div class="full-passage">
+          <span class="snum">①</span>Sharing meanings and experiences is not a simple, automatic process: whenever two or more people observe or participate in the same ongoing event they experience it from different perspectives, with different histories, with different background knowledge.
+          <span class="snum">②</span>These differences are most glaring when the individuals involved include an infant or very young child and an adult, although an adult arranging an event for an infant may find it difficult to keep these differences in mind.
+          <span class="snum">③</span>When giving a bath, for example, a parent whose experience with water play has been fun, whose knowledge about the source of the water and its disposition provides confidence, and whose body control ensures that the baby is safely held and not in danger, expects the infant to enjoy splashing water.
+          <span class="snum">④</span>Yet the baby may make it clear (perhaps by terrified crying) that her perspective is quite different from that of the adult.
+          <span class="snum">⑤</span>The two share an experience, but not a meaning.
+        </div>
+      </div>
+
+      <!-- ② 문장분석 -->
+      <div class="pane" id="t2-sent">
+        <!-- 문장 1 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">①</span>Sharing meanings and experiences is not a simple, automatic process: whenever two or more people observe or participate in the same ongoing event they experience it from different perspectives, with different histories, with different background knowledge.</div>
+          <div class="chunk">Sharing meanings and experiences / 의미와 경험을 공유하는 것은 / is not a simple, automatic process: / 단순하고 자동적인 과정이 아니다 / whenever two or more people observe or participate in / 둘 이상의 사람이 ~을 관찰하거나 참여할 때마다 / the same ongoing event / 똑같이 진행 중인 사건을 / they experience it / 그들은 그것을 경험한다 / from different perspectives, / 서로 다른 관점에서 / with different histories, / 서로 다른 이력으로 / with different background knowledge. / 서로 다른 배경지식을 가지고</div>
+          <div class="ko-trans">의미와 경험을 공유하는 것은 단순하고 자동적인 과정이 아니다. 둘 이상의 사람이 똑같이 진행 중인 사건을 관찰하거나 참여할 때마다, 그들은 그것을 서로 다른 관점, 서로 다른 이력, 서로 다른 배경지식을 가지고 경험한다.</div>
+          <ul class="gram-list">
+            <li><span class="item">동명사 주어</span><span class="ex">Sharing ... is not</span><span class="pt">★ 동명사구 주어 → 단수 동사 is. 수일치 빈출.</span></li>
+            <li><span class="item">복합관계부사 whenever</span><span class="ex">whenever two or more people observe</span><span class="pt">★ '~할 때마다' = at any time when. 시간의 부사절.</span></li>
+            <li><span class="item">병렬 전치사구</span><span class="ex">from ... , with ... , with ...</span><span class="pt">★ 세 개의 부사구가 콤마로 병치. 어법 출제 빈출.</span></li>
+            <li><span class="item">현재분사 ongoing</span><span class="ex">the same ongoing event</span><span class="pt">★ '진행 중인'. 명사 수식의 능동적 의미.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 2 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">②</span>These differences are most glaring when the individuals involved include an infant or very young child and an adult, although an adult arranging an event for an infant may find it difficult to keep these differences in mind.</div>
+          <div class="chunk">These differences are most glaring / 이러한 차이는 가장 두드러진다 / when the individuals involved / 관련된 개인들이 / include an infant or very young child and an adult, / 영아나 매우 어린아이와 성인을 포함할 때 / although an adult / 비록 성인이 / arranging an event for an infant / 영아를 위해 어떤 사건을 준비하는 / may find it difficult / 그것을 어렵다고 여길 수 있지만 / to keep these differences in mind. / 이러한 차이를 염두에 두는 것을</div>
+          <div class="ko-trans">이러한 차이는 관련된 개인들이 영아나 매우 어린아이와 성인을 포함할 때 가장 두드러지는데, 비록 영아를 위해 사건을 준비하는 성인은 이러한 차이를 염두에 두는 것이 어렵다고 여길 수도 있다.</div>
+          <ul class="gram-list">
+            <li><span class="item">최상급 + most</span><span class="ex">most glaring</span><span class="pt">★ '가장 두드러진'. 형용사 the 없이 쓰이는 최상급(상태 강조).</span></li>
+            <li><span class="item">과거분사 후치수식</span><span class="ex">the individuals involved</span><span class="pt">★ '관련된 사람들' (수동). who are involved의 축약.</span></li>
+            <li><span class="item">현재분사 후치수식</span><span class="ex">an adult arranging an event</span><span class="pt">★ '준비하는 성인' (능동). who is arranging의 축약.</span></li>
+            <li><span class="item">가목적어 it</span><span class="ex">find it difficult to keep</span><span class="pt">★ find + it(가목적어) + 형용사 + to V(진목적어) 구조. 빈출.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 3 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">③</span>When giving a bath, for example, a parent whose experience with water play has been fun, whose knowledge about the source of the water and its disposition provides confidence, and whose body control ensures that the baby is safely held and not in danger, expects the infant to enjoy splashing water.</div>
+          <div class="chunk">When giving a bath, for example, / 예를 들어, 목욕을 시킬 때 / a parent / 부모는 / whose experience with water play has been fun, / 물놀이 경험이 즐거웠던 / whose knowledge about the source of the water and its disposition / 물의 출처와 처리에 대한 지식이 / provides confidence, / 자신감을 주는 / and whose body control / 그리고 그 신체 통제력이 / ensures that the baby is safely held / 아기가 안전하게 안기는 것을 보장하는 / and not in danger, / 위험에 처하지 않도록 / expects the infant / 영아가 ~하기를 기대한다 / to enjoy splashing water. / 물 튀기는 것을 즐기기를</div>
+          <div class="ko-trans">예를 들어, 목욕을 시킬 때, 물놀이 경험이 즐거웠고, 물의 출처와 처리에 대한 지식이 자신감을 주며, 신체 통제력으로 아기를 안전하게 안고 위험하지 않게 할 수 있는 부모는, 영아가 물 튀기는 것을 즐길 것이라고 기대한다.</div>
+          <ul class="gram-list">
+            <li><span class="item">분사구문 (시간)</span><span class="ex">When (a parent is) giving a bath</span><span class="pt">★ When + 분사. 「주어+be동사」 생략된 분사구문.</span></li>
+            <li><span class="item">소유격 관계대명사 whose (3중 병치)</span><span class="ex">whose experience ... , whose knowledge ... , and whose body control</span><span class="pt">★ 한 선행사(a parent)에 세 개의 whose절이 병치. 어법·구조 최고 난도.</span></li>
+            <li><span class="item">expect + O + to V</span><span class="ex">expects the infant to enjoy</span><span class="pt">★ '~가 ~하기를 기대하다'. 목적격 보어로 to V.</span></li>
+            <li><span class="item">동명사 목적어</span><span class="ex">enjoy splashing</span><span class="pt">★ enjoy는 동명사를 목적어로 취함. enjoy to V (X).</span></li>
+          </ul>
+        </div>
+        <!-- 문장 4 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">④</span>Yet the baby may make it clear (perhaps by terrified crying) that her perspective is quite different from that of the adult.</div>
+          <div class="chunk">Yet / 그러나 / the baby may make it clear / 아기는 그것을 분명히 할 수 있다 / (perhaps by terrified crying) / (아마도 겁에 질린 울음으로) / that her perspective is quite different / 자신의 관점이 상당히 다르다는 것을 / from that of the adult. / 어른의 관점과는</div>
+          <div class="ko-trans">그러나 아기는 (아마도 겁에 질린 울음으로) 자신의 관점이 어른의 관점과는 상당히 다르다는 것을 분명히 할 수 있다.</div>
+          <ul class="gram-list">
+            <li><span class="item">가목적어 it + 진목적어 that절</span><span class="ex">make it clear that ...</span><span class="pt">★ make + it(가O) + clear(O.C) + that절(진O) 구조. 5형식.</span></li>
+            <li><span class="item">감정 분사 terrified</span><span class="ex">terrified crying</span><span class="pt">★ 사람이 느끼는 감정의 결과 → 과거분사. terrifying(능동, 사물)과 구분.</span></li>
+            <li><span class="item">지시대명사 that</span><span class="ex">that of the adult</span><span class="pt">★ that = the perspective. 반복 회피용 단수 지시대명사. those와 수 구분.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 5 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑤</span>The two share an experience, but not a meaning.</div>
+          <div class="chunk">The two share an experience, / 둘은 경험을 공유한다 / but not a meaning. / 그러나 의미는 아니다</div>
+          <div class="ko-trans">그 둘은 경험은 공유하지만, 의미는 공유하지 않는다.</div>
+          <ul class="gram-list">
+            <li><span class="item">생략 구조</span><span class="ex">but not (share) a meaning</span><span class="pt">★ but 뒤 반복되는 동사 share 생략. 병렬+생략 어법.</span></li>
+            <li><span class="item">대조 접속사 but</span><span class="ex">share ... but not ...</span><span class="pt">★ 두 명사구 experience vs. meaning의 대조 강조.</span></li>
+            <li><span class="item">정관사 the + 수사</span><span class="ex">The two (= two persons)</span><span class="pt">★ 「the + 수사」가 특정 대상 가리킴 = '그 둘'.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ③ 핵심단어 -->
+      <div class="pane" id="t2-vocab">
+        <ul class="vocab-list">
+          <li class="vocab-item"><span class="vocab-word">automatic</span><span class="vocab-pos">adj.</span><span class="vocab-mean">자동적인</span><span class="vocab-deriv">automatically (adv.), automation (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">observe</span><span class="vocab-pos">v.</span><span class="vocab-mean">관찰하다, 보다</span><span class="vocab-deriv">observation (n.), observer (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">participate in</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~에 참여하다</span><span class="vocab-deriv">participation (n.), participant (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">ongoing</span><span class="vocab-pos">adj.</span><span class="vocab-mean">진행 중인</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">perspective</span><span class="vocab-pos">n.</span><span class="vocab-mean">관점, 시각</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">glaring</span><span class="vocab-pos">adj.</span><span class="vocab-mean">두드러진, 명백한</span><span class="vocab-deriv">glare (v.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">infant</span><span class="vocab-pos">n.</span><span class="vocab-mean">영아, 갓난아기</span><span class="vocab-deriv">infancy (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">arrange</span><span class="vocab-pos">v.</span><span class="vocab-mean">준비하다, 배열하다</span><span class="vocab-deriv">arrangement (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">keep ~ in mind</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~을 명심하다, 염두에 두다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">disposition</span><span class="vocab-pos">n.</span><span class="vocab-mean">처리, 배치, 성향</span><span class="vocab-deriv">dispose (v.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">confidence</span><span class="vocab-pos">n.</span><span class="vocab-mean">자신감, 확신</span><span class="vocab-deriv">confident (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">ensure</span><span class="vocab-pos">v.</span><span class="vocab-mean">보장하다, 반드시 ~하게 하다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">splash</span><span class="vocab-pos">v.</span><span class="vocab-mean">물을 튀기다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">terrified</span><span class="vocab-pos">adj.</span><span class="vocab-mean">겁에 질린, 무서워하는</span><span class="vocab-deriv">terrify (v.), terror (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">make it clear that</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~을 분명히 하다</span><span class="vocab-deriv">—</span></li>
+        </ul>
+      </div>
+
+      <!-- ④ 전문해석 -->
+      <div class="pane" id="t2-trans">
+        <div class="trans-box">
+          의미와 경험을 공유하는 것은 단순하고 자동적인 과정이 아니다. 둘 이상의 사람이 똑같이 진행 중인 사건을 관찰하거나 참여할 때마다, 그들은 그것을 서로 다른 관점, 서로 다른 이력, 서로 다른 배경지식을 가지고 경험한다. 이러한 차이는 관련된 개인들이 영아나 매우 어린아이와 성인을 포함할 때 가장 두드러지는데, 비록 영아를 위해 어떤 일을 준비하는 성인은 이러한 차이를 염두에 두는 것이 어렵다고 여길 수도 있다. 예를 들어, 목욕을 시킬 때, 물놀이 경험이 즐거웠고, 물의 출처와 처리에 대한 지식이 자신감을 주며, 신체 통제력으로 아기를 안전하게 안고 위험하지 않게 할 수 있는 부모는, 영아가 물 튀기는 것을 즐길 것이라고 기대한다. 그러나 아기는 (아마도 겁에 질린 울음으로) 자신의 관점이 어른의 관점과 상당히 다르다는 것을 분명히 할 수 있다. 그 둘은 경험은 공유하지만, 의미는 공유하지 않는다.
+        </div>
+      </div>
+
+      <!-- ⑤ 주제·요지 -->
+      <div class="pane" id="t2-topic">
+        <div class="topic-box">
+          <h3>주제 (Topic)</h3>
+          <div class="content">동일한 경험에 대한 의미 공유의 어려움 — 특히 성인과 영아 간의 인식 차이</div>
+        </div>
+        <div class="topic-box">
+          <h3>요지 (Main Idea)</h3>
+          <div class="content">같은 사건에 참여하더라도 사람마다 관점·이력·배경지식이 달라 의미는 자동으로 공유되지 않으며, 특히 성인과 영아 사이에서 그 차이가 가장 극명하게 드러난다. 따라서 경험을 공유한다는 것이 곧 의미를 공유한다는 뜻은 아니다.</div>
+        </div>
+        <div class="topic-box">
+          <h3>구조 흐름 (Structure)</h3>
+          <ol class="struct-list">
+            <li>도입(주장): 의미·경험의 공유는 자동적 과정이 아님</li>
+            <li>일반화: 같은 사건도 사람마다 다른 관점·이력·지식으로 경험함</li>
+            <li>구체화: 차이는 영아-성인 사이에서 가장 두드러짐</li>
+            <li>예시(목욕): 부모의 즐거운 기대 vs. 아기의 공포 반응 대비</li>
+            <li>결론: '경험은 공유하나 의미는 공유되지 않는다'</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- ⑥ 배경지식 -->
+      <div class="pane" id="t2-bg">
+        <div class="bg-section">
+          <h3>Intersubjectivity (상호주관성)</h3>
+          <p>심리학·철학에서 '상호주관성'은 두 사람이 같은 경험을 공유하더라도 그 의미가 자동으로 일치하지 않는다는 개념을 다룬다. 비고츠키(Vygotsky)와 트레바튼(Trevarthen) 같은 발달심리학자들은 영아와 양육자 간 의미 공유의 형성을 평생에 걸친 '의미 협상(meaning negotiation)' 과정으로 보았다.</p>
+        </div>
+        <div class="bg-section">
+          <h3>Infant Cognition (영아 인지)</h3>
+          <p>영아는 약 9개월부터 '공동 주의(joint attention)' 능력이 발달하기 시작한다. 그 이전에는 같은 사물·사건을 보더라도 성인과 의미를 공유하기 매우 어렵다. 본문의 목욕 예시는 영아가 물의 출처·안전성에 대한 배경지식이 없어 단순 감각 자극에 공포 반응을 보이는 전형적 사례이다.</p>
+        </div>
+        <div class="bg-section">
+          <h3>Schema Theory (스키마 이론)</h3>
+          <p>인지심리학자 바틀릿(Bartlett)이 제안한 스키마 이론에 따르면, 인간은 새로운 경험을 기존의 인지 구조(schema)에 비추어 해석한다. 부모는 '물=즐거움+안전'이라는 스키마를 가지지만, 영아는 그런 스키마가 없어 같은 사건을 전혀 다른 의미로 해석한다.</p>
+        </div>
+      </div>
+
+      <!-- ⑦ 변형문제 -->
+      <div class="pane" id="t2-quiz">
+        <!-- Q1 주제추론 -->
+        <div class="quiz">
+          <span class="quiz-num">1. 주제 추론</span>
+          <div class="quiz-q">다음 글의 주제로 가장 적절한 것은?</div>
+          <ul class="opts">
+            <li onclick="check('q2-1',this,false)"><span class="onum">①</span>영아 발달 단계에 맞는 효과적인 양육 방법</li>
+            <li onclick="check('q2-1',this,false)"><span class="onum">②</span>물놀이가 아기에게 미치는 정서적 영향</li>
+            <li onclick="check('q2-1',this,true)"><span class="onum">③</span>같은 경험을 해도 사람마다 의미는 자동으로 공유되지 않음</li>
+            <li onclick="check('q2-1',this,false)"><span class="onum">④</span>성인이 영아의 언어 능력을 발달시키는 방법</li>
+            <li onclick="check('q2-1',this,false)"><span class="onum">⑤</span>배경지식이 학습 성취도에 미치는 효과</li>
+          </ul>
+          <div class="fb" id="fb-q2-1"></div>
+          <button class="reset-btn" onclick="resetQuiz('q2-1')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q2 빈칸추론 -->
+        <div class="quiz">
+          <span class="quiz-num">2. 빈칸 추론</span>
+          <div class="quiz-q">다음 빈칸에 들어갈 말로 가장 적절한 것은?</div>
+          <div class="quiz-passage">When giving a bath, a parent expects the infant to enjoy splashing water. Yet the baby may make it clear (perhaps by terrified crying) that her perspective is quite different from that of the adult. The two share an experience, <span class="blank">_______</span>.</div>
+          <ul class="opts">
+            <li onclick="check('q2-2',this,false)"><span class="onum">①</span>and also a memory</li>
+            <li onclick="check('q2-2',this,false)"><span class="onum">②</span>as well as their feelings</li>
+            <li onclick="check('q2-2',this,false)"><span class="onum">③</span>along with similar knowledge</li>
+            <li onclick="check('q2-2',this,true)"><span class="onum">④</span>but not a meaning</li>
+            <li onclick="check('q2-2',this,false)"><span class="onum">⑤</span>and the same perspective</li>
+          </ul>
+          <div class="fb" id="fb-q2-2"></div>
+          <button class="reset-btn" onclick="resetQuiz('q2-2')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q3 어법오류 -->
+        <div class="quiz">
+          <span class="quiz-num">3. 어법 오류 찾기</span>
+          <div class="quiz-q">다음 글의 밑줄 친 부분 중 어법상 틀린 것은?</div>
+          <div class="quiz-passage">Sharing meanings and experiences <u>①is</u> not a simple, automatic process. These differences are most glaring when the individuals <u>②involved</u> include an infant and an adult, although an adult <u>③arranging</u> an event for an infant may find <u>④them</u> difficult to keep these differences in mind. The baby may make it clear that her perspective is quite different from <u>⑤that</u> of the adult.</div>
+          <ul class="opts">
+            <li onclick="check('q2-3',this,false)"><span class="onum">①</span>is</li>
+            <li onclick="check('q2-3',this,false)"><span class="onum">②</span>involved</li>
+            <li onclick="check('q2-3',this,false)"><span class="onum">③</span>arranging</li>
+            <li onclick="check('q2-3',this,true)"><span class="onum">④</span>them</li>
+            <li onclick="check('q2-3',this,false)"><span class="onum">⑤</span>that</li>
+          </ul>
+          <div class="fb" id="fb-q2-3"></div>
+          <button class="reset-btn" onclick="resetQuiz('q2-3')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q4 내용불일치 -->
+        <div class="quiz">
+          <span class="quiz-num">4. 내용 불일치</span>
+          <div class="quiz-q">윗글의 내용과 일치하지 <u>않는</u> 것은?</div>
+          <ul class="opts">
+            <li onclick="check('q2-4',this,false)"><span class="onum">①</span>사람들은 같은 사건을 서로 다른 관점과 배경지식으로 경험한다.</li>
+            <li onclick="check('q2-4',this,false)"><span class="onum">②</span>영아와 성인이 함께 있을 때 인식의 차이가 가장 두드러진다.</li>
+            <li onclick="check('q2-4',this,true)"><span class="onum">③</span>영아를 위해 사건을 준비하는 성인은 이러한 차이를 쉽게 인지한다.</li>
+            <li onclick="check('q2-4',this,false)"><span class="onum">④</span>목욕 시 부모는 아기가 물장난을 즐길 것이라고 기대한다.</li>
+            <li onclick="check('q2-4',this,false)"><span class="onum">⑤</span>경험을 공유하는 것이 곧 의미를 공유하는 것은 아니다.</li>
+          </ul>
+          <div class="fb" id="fb-q2-4"></div>
+          <button class="reset-btn" onclick="resetQuiz('q2-4')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q5 글의 순서 -->
+        <div class="quiz">
+          <span class="quiz-num">5. 글의 순서</span>
+          <div class="quiz-q">주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?</div>
+          <div class="quiz-passage">Sharing meanings and experiences is not a simple, automatic process: whenever two or more people observe or participate in the same ongoing event they experience it from different perspectives, with different histories, with different background knowledge.<br><br>(A) When giving a bath, for example, a parent whose experience with water play has been fun expects the infant to enjoy splashing water.<br><br>(B) These differences are most glaring when the individuals involved include an infant or very young child and an adult, although an adult arranging an event for an infant may find it difficult to keep these differences in mind.<br><br>(C) Yet the baby may make it clear (perhaps by terrified crying) that her perspective is quite different from that of the adult. The two share an experience, but not a meaning.</div>
+          <ul class="opts">
+            <li onclick="check('q2-5',this,false)"><span class="onum">①</span>(A) - (B) - (C)</li>
+            <li onclick="check('q2-5',this,false)"><span class="onum">②</span>(A) - (C) - (B)</li>
+            <li onclick="check('q2-5',this,true)"><span class="onum">③</span>(B) - (A) - (C)</li>
+            <li onclick="check('q2-5',this,false)"><span class="onum">④</span>(B) - (C) - (A)</li>
+            <li onclick="check('q2-5',this,false)"><span class="onum">⑤</span>(C) - (B) - (A)</li>
+          </ul>
+          <div class="fb" id="fb-q2-5"></div>
+          <button class="reset-btn" onclick="resetQuiz('q2-5')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- 서술형 1 -->
+        <div class="essay">
+          <span class="essay-num">서술형 1. 빈칸 요약</span>
+          <div class="essay-q">다음 빈칸 (A), (B)에 들어갈 말을 본문에서 찾아 쓰시오.</div>
+          <div class="essay-cond">조건: 본문의 단어를 그대로 활용할 것. 각각 한 단어.</div>
+          <div class="quiz-passage">When people participate in the same event, they may share the (A) ________ but not the (B) ________, because each person brings different perspectives, histories, and background knowledge.</div>
+          <textarea id="essay2-1" placeholder="(A): ________________  /  (B): ________________"></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay2-1')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans2-1')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay2-1"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans2-1"><b>모범답안</b>(A) experience &nbsp; / &nbsp; (B) meaning</div>
+        </div>
+
+        <!-- 서술형 2 -->
+        <div class="essay">
+          <span class="essay-num">서술형 2. 영작 서술</span>
+          <div class="essay-q">본문에서 부모가 목욕 시 아기가 물놀이를 즐길 것이라고 기대하는 세 가지 이유를 30단어 내외의 완전한 영어 문장으로 서술하시오.</div>
+          <div class="essay-cond">조건: ① 완전한 영어 문장 ② 30단어 내외 ③ 'experience', 'knowledge', 'body control' 단어 포함</div>
+          <textarea id="essay2-2" placeholder="Write your answer in English..."></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay2-2')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans2-2')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay2-2"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans2-2"><b>모범답안</b>A parent expects the infant to enjoy splashing water because their past experience with water play has been fun, their knowledge gives them confidence, and their body control keeps the baby safe.</div>
+        </div>
+
+        <!-- 서술형 3 -->
+        <div class="essay">
+          <span class="essay-num">서술형 3. 한국어 서술</span>
+          <div class="essay-q">본문 마지막 문장 "The two share an experience, but not a meaning."이 의미하는 바를 본문 내용에 근거하여 두 문장 이내의 한국어로 설명하시오.</div>
+          <div class="essay-cond">조건: ① 한국어로 작성 ② 두 문장 이내 ③ '관점', '배경지식'이라는 단어를 포함할 것</div>
+          <textarea id="essay2-3" placeholder="한국어로 답을 작성하세요..."></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay2-3')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans2-3')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay2-3"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans2-3"><b>모범답안</b>부모와 아기가 목욕이라는 동일한 사건에 함께 있더라도, 서로 다른 관점과 배경지식 때문에 그 사건이 각자에게 갖는 의미는 전혀 다르다. 즉, 같은 경험을 공유한다고 해서 그 의미까지 자동으로 공유되는 것은 아니다.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ Passage 3: 14-2 ============ -->
+    <div class="panel" id="p3">
+      <div class="passage-header">
+        <div class="pid">EBS-14 · Passage 2</div>
+        <h2>The Reality of Scientific Practice</h2>
+        <div class="ko">TRF 발견 사례로 본 과학 연구의 실제 모습</div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('p3','t3-full',this)">① 전문</button>
+        <button class="tab" onclick="showTab('p3','t3-sent',this)">② 문장분석</button>
+        <button class="tab" onclick="showTab('p3','t3-vocab',this)">③ 핵심단어</button>
+        <button class="tab" onclick="showTab('p3','t3-trans',this)">④ 전문해석</button>
+        <button class="tab" onclick="showTab('p3','t3-topic',this)">⑤ 주제·요지</button>
+        <button class="tab" onclick="showTab('p3','t3-bg',this)">⑥ 배경지식</button>
+        <button class="tab" onclick="showTab('p3','t3-quiz',this)">⑦ 변형문제</button>
+      </div>
+
+      <!-- ① 전문 -->
+      <div class="pane active" id="t3-full">
+        <div class="full-passage">
+          <span class="snum">①</span>A detailed anthropological study of daily scientific practice in the Salk Institute laboratory in La Jolla, California shows how difficult it is to trace intentions and methods.
+          <span class="snum">②</span>Bruno Latour describes how scientists arrived at the elucidation of TRF (thyrotropin-releasing factor), a hormone that is secreted by the brain.
+          <span class="snum">③</span>He says that his observations led him to "the conviction that a body of practices widely regarded by outsiders as well organized, logical, and coherent, in fact consists of a disordered array of observations with which scientists struggle to produce order."
+          <span class="snum">④</span>The final consensus formulation of TRF (i.e., when it became a scientific "fact") emerged some time between January 1968 and January 1970.
+          <span class="snum">⑤</span>Half of the Nobel Prize in Medicine for 1977 for this discovery was shared between the Salk group and another competing group in New Orleans (the other half went to Rosalind Yalow for the techniques she developed that were used in these studies), but each of these two competing groups strongly felt that they deserved sole credit and that the other did not deserve even a share of the award.
+        </div>
+      </div>
+
+      <!-- ② 문장분석 -->
+      <div class="pane" id="t3-sent">
+        <!-- 문장 1 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">①</span>A detailed anthropological study of daily scientific practice in the Salk Institute laboratory in La Jolla, California shows how difficult it is to trace intentions and methods.</div>
+          <div class="chunk">A detailed anthropological study / 상세한 인류학적 연구는 / of daily scientific practice / 일상적인 과학적 실천에 관한 / in the Salk Institute laboratory / Salk 연구소 실험실의 / in La Jolla, California / 캘리포니아 라호이아에 있는 / shows / 보여준다 / how difficult it is / 그것이 얼마나 어려운지를 / to trace intentions and methods. / 의도와 방법을 추적하는 것이</div>
+          <div class="ko-trans">캘리포니아 라호이아에 있는 Salk 연구소 실험실의 일상적인 과학 연구 활동에 관한 상세한 인류학적 연구는, 그 의도와 방법을 추적하는 것이 얼마나 어려운지를 보여준다.</div>
+          <ul class="gram-list">
+            <li><span class="item">간접의문문 (how + 형용사)</span><span class="ex">how difficult it is to trace</span><span class="pt">★ how + 형용사 + 주어 + 동사 어순. shows의 목적어절.</span></li>
+            <li><span class="item">가주어 it - 진주어 to V</span><span class="ex">it is ... to trace</span><span class="pt">★ it = to trace intentions and methods. 빈출.</span></li>
+            <li><span class="item">주어-동사 수일치</span><span class="ex">A ... study ... shows</span><span class="pt">★ 핵심 주어 study(단수) → shows. 긴 수식어구에 속지 말 것.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 2 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">②</span>Bruno Latour describes how scientists arrived at the elucidation of TRF (thyrotropin-releasing factor), a hormone that is secreted by the brain.</div>
+          <div class="chunk">Bruno Latour describes / Bruno Latour는 묘사한다 / how scientists arrived at / 과학자들이 어떻게 도달했는지 / the elucidation of TRF / TRF의 규명에 / (thyrotropin-releasing factor), / (갑상선자극호르몬방출인자) / a hormone / 호르몬 / that is secreted by the brain. / 뇌에 의해 분비되는</div>
+          <div class="ko-trans">Bruno Latour는 과학자들이 어떻게 뇌에서 분비되는 호르몬인 TRF(갑상선자극호르몬방출인자)의 규명에 도달했는지를 묘사한다.</div>
+          <ul class="gram-list">
+            <li><span class="item">간접의문문 how절</span><span class="ex">how scientists arrived at</span><span class="pt">★ describes의 목적어. how + 주어 + 동사 어순.</span></li>
+            <li><span class="item">동격 콤마</span><span class="ex">TRF, a hormone that ...</span><span class="pt">★ 콤마 + 명사구 = TRF에 대한 추가 설명(동격). 빈출.</span></li>
+            <li><span class="item">주격 관계대명사 that</span><span class="ex">a hormone that is secreted</span><span class="pt">★ 선행사 a hormone(사물·단수) → that is.</span></li>
+            <li><span class="item">수동태</span><span class="ex">is secreted by the brain</span><span class="pt">★ 호르몬이 분비되는 대상 → 수동. by 행위자 표시.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 3 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">③</span>He says that his observations led him to "the conviction that a body of practices widely regarded by outsiders as well organized, logical, and coherent, in fact consists of a disordered array of observations with which scientists struggle to produce order."</div>
+          <div class="chunk">He says that / 그는 말한다 / his observations led him to "the conviction / 그의 관찰이 그를 그러한 확신으로 이끌었다고 / that a body of practices / 일련의 활동이 / widely regarded by outsiders / 외부인들에 의해 널리 여겨지는 / as well organized, logical, and coherent, / 잘 조직되고 논리적이며 일관된 것으로 / in fact consists of / 사실은 ~으로 이루어져 있다고 / a disordered array of observations / 무질서한 관찰들의 나열로 / with which scientists struggle / 과학자들이 그것들로 고군분투하는 / to produce order. / 질서를 만들어내려고"</div>
+          <div class="ko-trans">그는, 자신의 관찰이 다음과 같은 확신으로 자신을 이끌었다고 말한다. 즉, 외부인들이 잘 조직되고 논리적이며 일관된 것으로 널리 여기는 일련의 활동이, 사실은 과학자들이 그것으로부터 질서를 만들어내려고 고군분투하는 무질서한 관찰들의 나열로 이루어져 있다는 것이다.</div>
+          <ul class="gram-list">
+            <li><span class="item">동격 that절</span><span class="ex">the conviction that ... consists of</span><span class="pt">★ '~라는 확신'. 추상명사(conviction) + that절 동격. 빈출.</span></li>
+            <li><span class="item">과거분사 후치수식</span><span class="ex">practices widely regarded by outsiders as ...</span><span class="pt">★ which are widely regarded의 축약. regard A as B 수동형.</span></li>
+            <li><span class="item">전치사 + 관계대명사</span><span class="ex">observations with which scientists struggle</span><span class="pt">★ scientists struggle with observations에서 with 전치사가 앞으로 이동. 어법 빈출.</span></li>
+            <li><span class="item">병렬 형용사 3개</span><span class="ex">organized, logical, and coherent</span><span class="pt">★ as B 자리 형용사 세 개 병치.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 4 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">④</span>The final consensus formulation of TRF (i.e., when it became a scientific "fact") emerged some time between January 1968 and January 1970.</div>
+          <div class="chunk">The final consensus formulation of TRF / TRF에 대한 최종적 합의 공식화는 / (i.e., when it became a scientific "fact") / (즉, 그것이 과학적 '사실'이 된 시점은) / emerged / 등장했다 / some time between January 1968 and January 1970. / 1968년 1월과 1970년 1월 사이의 어느 시점에</div>
+          <div class="ko-trans">TRF에 대한 최종적인 합의된 공식화는 (즉, 그것이 과학적 '사실'이 된 시점은) 1968년 1월과 1970년 1월 사이의 어느 시점에 등장했다.</div>
+          <ul class="gram-list">
+            <li><span class="item">관계부사 when (보충 설명)</span><span class="ex">i.e., when it became</span><span class="pt">★ 관계부사 when이 시간 부사처럼 쓰여 콤마 뒤에서 보충 설명. (i.e. = '즉')</span></li>
+            <li><span class="item">대명사 it</span><span class="ex">when it became</span><span class="pt">★ it = the final consensus formulation of TRF. 지시 대상 확인 필수.</span></li>
+            <li><span class="item">between A and B</span><span class="ex">between January 1968 and January 1970</span><span class="pt">★ 'A와 B 사이에'. 두 시점 사이 구간 표현.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 5 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑤</span>Half of the Nobel Prize in Medicine for 1977 for this discovery was shared between the Salk group and another competing group in New Orleans (the other half went to Rosalind Yalow for the techniques she developed that were used in these studies), but each of these two competing groups strongly felt that they deserved sole credit and that the other did not deserve even a share of the award.</div>
+          <div class="chunk">Half of the Nobel Prize in Medicine for 1977 / 1977년 노벨 의학상의 절반은 / for this discovery / 이 발견에 대한 / was shared / 공유되었다 / between the Salk group and another competing group in New Orleans / Salk 연구진과 뉴올리언스의 또 다른 경쟁 연구진 사이에 / (the other half went to Rosalind Yalow / (나머지 절반은 Rosalind Yalow에게 돌아갔다 / for the techniques she developed / 그녀가 개발한 기술 덕분에 / that were used in these studies), / 이 연구들에 사용된) / but each of these two competing groups / 그러나 이 두 경쟁 연구진 각각은 / strongly felt that / 강하게 느꼈다 / they deserved sole credit / 자신들이 단독 공로를 받을 자격이 있고 / and that the other did not deserve / 그리고 상대방은 받을 자격이 없다고 / even a share of the award. / 그 상의 일부조차도</div>
+          <div class="ko-trans">이 발견에 대한 1977년 노벨 의학상의 절반은 Salk 연구진과 뉴올리언스의 또 다른 경쟁 연구진이 공유했지만(나머지 절반은 그 연구들에 사용된 자신이 개발한 기술 덕분에 Rosalind Yalow에게 돌아갔다), 이 두 경쟁 연구진 각각은 자신들이 단독 공로를 받을 자격이 있고 상대방은 그 상의 일부조차도 받을 자격이 없다고 강하게 느꼈다.</div>
+          <ul class="gram-list">
+            <li><span class="item">수동태 + between</span><span class="ex">was shared between A and B</span><span class="pt">★ share A between B and C → was shared between B and C. 수동 전환.</span></li>
+            <li><span class="item">관계대명사 생략 + 이중 관계절</span><span class="ex">the techniques (that) she developed that were used</span><span class="pt">★ 첫 that 생략(목적격) + 두 번째 that(주격). 이중 수식 고난도.</span></li>
+            <li><span class="item">that절 병치</span><span class="ex">felt that ... and that ...</span><span class="pt">★ 두 개의 that 명사절이 felt의 목적어로 병치. 두 번째 that 생략 가능하나 명시함.</span></li>
+            <li><span class="item">each of + 복수명사 + 단수동사</span><span class="ex">each of these two competing groups ... felt</span><span class="pt">★ each는 단수 취급이나 felt는 과거형이라 수일치 무관. 그러나 주어가 단수임을 인식.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ③ 핵심단어 -->
+      <div class="pane" id="t3-vocab">
+        <ul class="vocab-list">
+          <li class="vocab-item"><span class="vocab-word">anthropological</span><span class="vocab-pos">adj.</span><span class="vocab-mean">인류학적인</span><span class="vocab-deriv">anthropology (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">practice</span><span class="vocab-pos">n.</span><span class="vocab-mean">실천, 관행, 활동</span><span class="vocab-deriv">practical (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">trace</span><span class="vocab-pos">v.</span><span class="vocab-mean">추적하다, 찾아내다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">intention</span><span class="vocab-pos">n.</span><span class="vocab-mean">의도, 목적</span><span class="vocab-deriv">intend (v.), intentional (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">elucidation</span><span class="vocab-pos">n.</span><span class="vocab-mean">규명, 해명</span><span class="vocab-deriv">elucidate (v.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">hormone</span><span class="vocab-pos">n.</span><span class="vocab-mean">호르몬</span><span class="vocab-deriv">hormonal (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">secrete</span><span class="vocab-pos">v.</span><span class="vocab-mean">분비하다</span><span class="vocab-deriv">secretion (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">conviction</span><span class="vocab-pos">n.</span><span class="vocab-mean">확신, 신념</span><span class="vocab-deriv">convince (v.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">a body of</span><span class="vocab-pos">phr.</span><span class="vocab-mean">일련의, 다량의</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">regard A as B</span><span class="vocab-pos">phr.</span><span class="vocab-mean">A를 B로 여기다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">coherent</span><span class="vocab-pos">adj.</span><span class="vocab-mean">일관된, 논리정연한</span><span class="vocab-deriv">coherence (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">consist of</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~으로 이루어져 있다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">disordered</span><span class="vocab-pos">adj.</span><span class="vocab-mean">무질서한, 혼란한</span><span class="vocab-deriv">disorder (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">array</span><span class="vocab-pos">n.</span><span class="vocab-mean">집합, 배열</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">struggle to V</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~하려고 고군분투하다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">consensus</span><span class="vocab-pos">n.</span><span class="vocab-mean">합의, 의견 일치</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">formulation</span><span class="vocab-pos">n.</span><span class="vocab-mean">공식화, 명확한 표현</span><span class="vocab-deriv">formulate (v.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">deserve</span><span class="vocab-pos">v.</span><span class="vocab-mean">~을 받을 자격이 있다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">sole</span><span class="vocab-pos">adj.</span><span class="vocab-mean">단독의, 유일한</span><span class="vocab-deriv">solely (adv.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">credit</span><span class="vocab-pos">n.</span><span class="vocab-mean">공로, 인정</span><span class="vocab-deriv">—</span></li>
+        </ul>
+      </div>
+
+      <!-- ④ 전문해석 -->
+      <div class="pane" id="t3-trans">
+        <div class="trans-box">
+          캘리포니아 라호이아에 있는 Salk 연구소 실험실의 일상적인 과학 연구 활동에 관한 상세한 인류학적 연구는, 그 의도와 방법을 추적하는 것이 얼마나 어려운지를 보여준다. Bruno Latour는 과학자들이 어떻게 뇌에서 분비되는 호르몬인 TRF(갑상선자극호르몬방출인자)의 규명에 도달했는지를 묘사한다. 그는 자신의 관찰이 다음과 같은 확신으로 자신을 이끌었다고 말한다. 즉, 외부인들이 잘 조직되고 논리적이며 일관된 것으로 널리 여기는 일련의 활동이, 사실은 과학자들이 그것으로부터 질서를 만들어내려고 고군분투하는 무질서한 관찰들의 나열로 이루어져 있다는 것이다. TRF에 대한 최종적인 합의된 공식화는 (즉, 그것이 과학적 '사실'이 된 시점은) 1968년 1월과 1970년 1월 사이의 어느 시점에 등장했다. 이 발견에 대한 1977년 노벨 의학상의 절반은 Salk 연구진과 뉴올리언스의 또 다른 경쟁 연구진이 공유했지만(나머지 절반은 그 연구들에 사용된 자신이 개발한 기술 덕분에 Rosalind Yalow에게 돌아갔다), 이 두 경쟁 연구진 각각은 자신들이 단독 공로를 받을 자격이 있고 상대방은 그 상의 일부조차도 받을 자격이 없다고 강하게 느꼈다.
+        </div>
+      </div>
+
+      <!-- ⑤ 주제·요지 -->
+      <div class="pane" id="t3-topic">
+        <div class="topic-box">
+          <h3>주제 (Topic)</h3>
+          <div class="content">외부에서 보이는 과학의 모습과 실제 과학 연구 현장의 모습 사이의 괴리</div>
+        </div>
+        <div class="topic-box">
+          <h3>요지 (Main Idea)</h3>
+          <div class="content">Bruno Latour의 인류학적 연구는 외부인들이 잘 조직되고 논리적이며 일관된 것으로 여기는 과학 활동이 실제로는 무질서한 관찰들로부터 질서를 만들어내려는 고군분투의 과정이며, TRF 발견과 노벨상 공로 다툼 사례가 이를 잘 보여준다고 말한다.</div>
+        </div>
+        <div class="topic-box">
+          <h3>구조 흐름 (Structure)</h3>
+          <ol class="struct-list">
+            <li>도입: Salk 연구소 일상에 대한 인류학적 연구 소개 — 의도·방법 추적의 어려움</li>
+            <li>전개: Latour의 TRF 연구 사례 — 외부 인식 vs. 내부 실상의 괴리</li>
+            <li>핵심 주장: 과학은 무질서한 관찰에서 질서를 만들어내려는 고군분투</li>
+            <li>구체화: TRF의 '사실화'는 1968~70년 사이에 등장</li>
+            <li>결론: 1977 노벨상 공로 분쟁 — 경쟁 그룹들이 단독 공로를 주장</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- ⑥ 배경지식 -->
+      <div class="pane" id="t3-bg">
+        <div class="bg-section">
+          <h3>Bruno Latour와 STS (과학기술학)</h3>
+          <p>Bruno Latour(1947–2022)는 프랑스의 사회학자·철학자로 STS(Science and Technology Studies) 분야의 창시자 중 한 명이다. 1979년 발간된 그의 저서 'Laboratory Life: The Construction of Scientific Facts'는 실제로 Salk 연구소에서 2년간 인류학적 참여 관찰을 통해 작성된 것으로, 과학 지식이 사회적으로 구성된다는 '구성주의(constructivism)' 시각을 대중화시켰다.</p>
+        </div>
+        <div class="bg-section">
+          <h3>TRF (Thyrotropin-Releasing Factor)</h3>
+          <p>TRF는 시상하부에서 분비되어 뇌하수체로부터 갑상선자극호르몬(TSH) 방출을 유도하는 신경호르몬이다. 1969년 Roger Guillemin(Salk Institute)과 Andrew Schally(New Orleans) 연구진이 거의 동시에 분자 구조를 규명했고, 두 사람 모두 1977년 노벨 생리의학상을 공동 수상했다. 본문이 말하는 '경쟁 그룹'이 바로 이 두 팀이다.</p>
+        </div>
+        <div class="bg-section">
+          <h3>Rosalind Yalow와 RIA (방사면역측정법)</h3>
+          <p>1977년 노벨 의학상의 나머지 절반을 받은 Rosalind Yalow는 RIA(Radioimmunoassay·방사면역측정법)를 개발한 미국 의학물리학자이다. RIA는 혈중 호르몬 등 극미량 물질을 측정할 수 있게 한 혁신적 기법으로, TRF 연구는 물론 현대 내분비학·면역학 전반에 사용되었다. Yalow는 미국 여성으로는 두 번째로 과학 분야 노벨상을 수상한 인물이다.</p>
+        </div>
+      </div>
+
+      <!-- ⑦ 변형문제 -->
+      <div class="pane" id="t3-quiz">
+        <!-- Q1 주제추론 -->
+        <div class="quiz">
+          <span class="quiz-num">1. 주제 추론</span>
+          <div class="quiz-q">다음 글의 주제로 가장 적절한 것은?</div>
+          <ul class="opts">
+            <li onclick="check('q3-1',this,false)"><span class="onum">①</span>TRF 발견 과정에 사용된 실험 기법의 우수성</li>
+            <li onclick="check('q3-1',this,false)"><span class="onum">②</span>노벨 의학상 수상자 선정 기준의 변천 과정</li>
+            <li onclick="check('q3-1',this,true)"><span class="onum">③</span>외부 인식과는 다른, 실제 과학 연구 활동의 무질서한 본질</li>
+            <li onclick="check('q3-1',this,false)"><span class="onum">④</span>Bruno Latour의 인류학적 연구 방법의 한계</li>
+            <li onclick="check('q3-1',this,false)"><span class="onum">⑤</span>두 연구 그룹 간 협업을 통한 과학적 성과 창출</li>
+          </ul>
+          <div class="fb" id="fb-q3-1"></div>
+          <button class="reset-btn" onclick="resetQuiz('q3-1')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q2 빈칸추론 -->
+        <div class="quiz">
+          <span class="quiz-num">2. 빈칸 추론</span>
+          <div class="quiz-q">다음 빈칸에 들어갈 말로 가장 적절한 것은?</div>
+          <div class="quiz-passage">He says that his observations led him to the conviction that a body of practices widely regarded by outsiders as well organized, logical, and coherent, in fact consists of <span class="blank">_______</span> with which scientists struggle to produce order.</div>
+          <ul class="opts">
+            <li onclick="check('q3-2',this,false)"><span class="onum">①</span>a clear methodological framework</li>
+            <li onclick="check('q3-2',this,true)"><span class="onum">②</span>a disordered array of observations</li>
+            <li onclick="check('q3-2',this,false)"><span class="onum">③</span>a series of predictable experiments</li>
+            <li onclick="check('q3-2',this,false)"><span class="onum">④</span>well-established scientific laws</li>
+            <li onclick="check('q3-2',this,false)"><span class="onum">⑤</span>strictly logical rules of procedure</li>
+          </ul>
+          <div class="fb" id="fb-q3-2"></div>
+          <button class="reset-btn" onclick="resetQuiz('q3-2')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q3 어법오류 -->
+        <div class="quiz">
+          <span class="quiz-num">3. 어법 오류 찾기</span>
+          <div class="quiz-q">다음 글의 밑줄 친 부분 중 어법상 틀린 것은?</div>
+          <div class="quiz-passage">A detailed anthropological study of daily scientific practice in the Salk Institute laboratory <u>①shows</u> how difficult it is to trace intentions and methods. Bruno Latour describes how scientists arrived at the elucidation of TRF, a hormone <u>②that</u> is secreted by the brain. He says that his observations led him to the conviction <u>③which</u> a body of practices in fact consists of a disordered array of observations <u>④with which</u> scientists struggle to produce order. The final consensus formulation of TRF emerged some time between January 1968 and January 1970, and each of these two competing groups strongly <u>⑤felt</u> they deserved sole credit.</div>
+          <ul class="opts">
+            <li onclick="check('q3-3',this,false)"><span class="onum">①</span>shows</li>
+            <li onclick="check('q3-3',this,false)"><span class="onum">②</span>that</li>
+            <li onclick="check('q3-3',this,true)"><span class="onum">③</span>which</li>
+            <li onclick="check('q3-3',this,false)"><span class="onum">④</span>with which</li>
+            <li onclick="check('q3-3',this,false)"><span class="onum">⑤</span>felt</li>
+          </ul>
+          <div class="fb" id="fb-q3-3"></div>
+          <button class="reset-btn" onclick="resetQuiz('q3-3')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q4 내용불일치 -->
+        <div class="quiz">
+          <span class="quiz-num">4. 내용 불일치</span>
+          <div class="quiz-q">윗글의 내용과 일치하지 <u>않는</u> 것은?</div>
+          <ul class="opts">
+            <li onclick="check('q3-4',this,false)"><span class="onum">①</span>Latour는 Salk 연구소에서 일상적인 과학 활동을 인류학적으로 연구했다.</li>
+            <li onclick="check('q3-4',this,false)"><span class="onum">②</span>TRF는 뇌에서 분비되는 호르몬이다.</li>
+            <li onclick="check('q3-4',this,false)"><span class="onum">③</span>외부인들은 과학 활동을 잘 조직되고 논리적이며 일관된 것으로 여긴다.</li>
+            <li onclick="check('q3-4',this,true)"><span class="onum">④</span>TRF에 대한 합의된 공식화는 1977년에 처음으로 이루어졌다.</li>
+            <li onclick="check('q3-4',this,false)"><span class="onum">⑤</span>두 경쟁 그룹은 각각 자신들이 단독 공로를 받아야 한다고 느꼈다.</li>
+          </ul>
+          <div class="fb" id="fb-q3-4"></div>
+          <button class="reset-btn" onclick="resetQuiz('q3-4')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q5 글의 순서 -->
+        <div class="quiz">
+          <span class="quiz-num">5. 글의 순서</span>
+          <div class="quiz-q">주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?</div>
+          <div class="quiz-passage">A detailed anthropological study of daily scientific practice in the Salk Institute laboratory in La Jolla, California shows how difficult it is to trace intentions and methods.<br><br>(A) The final consensus formulation of TRF (i.e., when it became a scientific "fact") emerged some time between January 1968 and January 1970.<br><br>(B) Bruno Latour describes how scientists arrived at the elucidation of TRF, a hormone that is secreted by the brain. He says that his observations led him to the conviction that a body of practices widely regarded as well organized, in fact consists of a disordered array of observations.<br><br>(C) Half of the Nobel Prize in Medicine for 1977 for this discovery was shared between the Salk group and another competing group in New Orleans, but each of these two competing groups strongly felt that they deserved sole credit.</div>
+          <ul class="opts">
+            <li onclick="check('q3-5',this,false)"><span class="onum">①</span>(A) - (B) - (C)</li>
+            <li onclick="check('q3-5',this,false)"><span class="onum">②</span>(A) - (C) - (B)</li>
+            <li onclick="check('q3-5',this,false)"><span class="onum">③</span>(B) - (C) - (A)</li>
+            <li onclick="check('q3-5',this,true)"><span class="onum">④</span>(B) - (A) - (C)</li>
+            <li onclick="check('q3-5',this,false)"><span class="onum">⑤</span>(C) - (A) - (B)</li>
+          </ul>
+          <div class="fb" id="fb-q3-5"></div>
+          <button class="reset-btn" onclick="resetQuiz('q3-5')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- 서술형 1 -->
+        <div class="essay">
+          <span class="essay-num">서술형 1. 빈칸 요약</span>
+          <div class="essay-q">다음 빈칸 (A), (B)에 들어갈 말을 본문에서 찾아 쓰시오.</div>
+          <div class="essay-cond">조건: 본문 표현을 그대로 활용. (A)는 한 단어 형용사, (B)는 두 단어.</div>
+          <div class="quiz-passage">Although outsiders view science as well organized and (A) ________, Latour's observations reveal that scientific practice is actually a (B) ________ ________ of observations from which scientists try to produce order.</div>
+          <textarea id="essay3-1" placeholder="(A): ________________  /  (B): ________________"></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay3-1')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans3-1')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay3-1"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans3-1"><b>모범답안</b>(A) coherent &nbsp; / &nbsp; (B) disordered array</div>
+        </div>
+
+        <!-- 서술형 2 -->
+        <div class="essay">
+          <span class="essay-num">서술형 2. 영작 서술</span>
+          <div class="essay-q">Latour가 자신의 관찰을 통해 도달한 '확신(conviction)'의 내용을 본문에 근거하여 30~40단어의 완전한 영어 문장으로 서술하시오.</div>
+          <div class="essay-cond">조건: ① 완전한 영어 문장 ② 30~40단어 ③ 'outsiders', 'disordered', 'order' 단어 포함</div>
+          <textarea id="essay3-2" placeholder="Write your answer in English..."></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay3-2')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans3-2')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay3-2"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans3-2"><b>모범답안</b>Latour became convinced that scientific practices, which outsiders regard as well organized and logical, in fact consist of a disordered array of observations from which scientists struggle to produce order.</div>
+        </div>
+
+        <!-- 서술형 3 -->
+        <div class="essay">
+          <span class="essay-num">서술형 3. 한국어 서술</span>
+          <div class="essay-q">본문에 따르면 TRF 발견과 관련된 1977년 노벨 의학상 수상자 구성과 두 경쟁 연구진의 태도를 한국어로 서술하시오.</div>
+          <div class="essay-cond">조건: ① 한국어 ② 3문장 이내 ③ '절반', '나머지 절반', '단독 공로' 표현 사용</div>
+          <textarea id="essay3-3" placeholder="한국어로 답을 작성하세요..."></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay3-3')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans3-3')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay3-3"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans3-3"><b>모범답안</b>1977년 노벨 의학상의 절반은 TRF 발견에 대한 공로로 Salk 연구진과 뉴올리언스의 경쟁 연구진이 공유했고, 나머지 절반은 관련 기술을 개발한 Rosalind Yalow에게 돌아갔다. 그러나 두 경쟁 연구진 각각은 자신들이 단독 공로를 받아야 마땅하고 상대방은 상의 일부조차 받을 자격이 없다고 강하게 주장했다.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ Passage 4: 14-3 ============ -->
+    <div class="panel" id="p4">
+      <div class="passage-header">
+        <div class="pid">EBS-14 · Passage 3</div>
+        <h2>The Hidden Role of Music Direction</h2>
+        <div class="ko">청중에게 잘 보이지 않아야 하는 음악 지휘의 역할</div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('p4','t4-full',this)">① 전문</button>
+        <button class="tab" onclick="showTab('p4','t4-sent',this)">② 문장분석</button>
+        <button class="tab" onclick="showTab('p4','t4-vocab',this)">③ 핵심단어</button>
+        <button class="tab" onclick="showTab('p4','t4-trans',this)">④ 전문해석</button>
+        <button class="tab" onclick="showTab('p4','t4-topic',this)">⑤ 주제·요지</button>
+        <button class="tab" onclick="showTab('p4','t4-bg',this)">⑥ 배경지식</button>
+        <button class="tab" onclick="showTab('p4','t4-quiz',this)">⑦ 변형문제</button>
+      </div>
+
+      <!-- ① 전문 -->
+      <div class="pane active" id="t4-full">
+        <div class="full-passage">
+          <span class="snum">①</span>The idea of music direction, in the sense of someone shaping and leading a musical performance, goes back to the beginnings of music.
+          <span class="snum">②</span>Even the gamelans of ancient Indonesia had leaders who would signal to the group changes of meter and tempo, beginnings and endings, and transitions from piece to piece.
+          <span class="snum">③</span>Yet listening audiences are rarely aware of any musical leadership, and for good aesthetic reason.
+          <span class="snum">④</span>They need not be aware to fulfill their experience; indeed, the unnecessarily conspicuous presence of a musical leader will detract from it.
+          <span class="snum">⑤</span>An audience is better off, for the most part, taking in the whole of a stage work rather than being party to the techniques that go into realizing it.
+          <span class="snum">⑥</span>This is not to say that when an orchestra plays alone the audience members' eyes are not fixed on the conductor for the majority of the time; they probably are.
+          <span class="snum">⑦</span>When music is accompanying something happening on stage, however, all eyes turn to the stage, and so do everyone's ears, too (including the music director's).
+        </div>
+      </div>
+
+      <!-- ② 문장분석 -->
+      <div class="pane" id="t4-sent">
+        <!-- 문장 1 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">①</span>The idea of music direction, in the sense of someone shaping and leading a musical performance, goes back to the beginnings of music.</div>
+          <div class="chunk">The idea of music direction, / 음악 지휘에 대한 개념은 / in the sense of someone shaping and leading / 누군가가 형성하고 이끄는 의미에서의 / a musical performance, / 음악 공연을 / goes back to / ~까지 거슬러 올라간다 / the beginnings of music. / 음악의 시초로</div>
+          <div class="ko-trans">누군가가 음악 공연을 형성하고 이끈다는 의미의 '음악 지휘'라는 개념은 음악의 시초까지 거슬러 올라간다.</div>
+          <ul class="gram-list">
+            <li><span class="item">주어-동사 수일치</span><span class="ex">The idea ... goes back</span><span class="pt">★ 핵심 주어 idea(단수) → goes. 사이 삽입 어구에 속지 말 것.</span></li>
+            <li><span class="item">동명사 의미상의 주어</span><span class="ex">someone shaping and leading</span><span class="pt">★ '~의 의미에서' 안에서 someone이 shaping/leading의 의미상 주어.</span></li>
+            <li><span class="item">go back to</span><span class="ex">goes back to the beginnings</span><span class="pt">★ '~까지 거슬러 올라가다, ~로부터 시작되다'. 빈출 숙어.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 2 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">②</span>Even the gamelans of ancient Indonesia had leaders who would signal to the group changes of meter and tempo, beginnings and endings, and transitions from piece to piece.</div>
+          <div class="chunk">Even the gamelans of ancient Indonesia / 심지어 고대 인도네시아의 가믈란조차도 / had leaders / 지도자들을 두었다 / who would signal to the group / 그 그룹에게 신호를 보내곤 했던 / changes of meter and tempo, / 박자와 템포의 변화 / beginnings and endings, / 시작과 끝 / and transitions from piece to piece. / 그리고 곡과 곡 사이의 전환을</div>
+          <div class="ko-trans">심지어 고대 인도네시아의 가믈란조차도 박자와 템포의 변화, 시작과 끝, 그리고 곡에서 곡으로의 전환을 그 그룹에게 신호로 알리곤 했던 지도자들을 두었다.</div>
+          <ul class="gram-list">
+            <li><span class="item">주격 관계대명사 who</span><span class="ex">leaders who would signal</span><span class="pt">★ 선행사 leaders(사람·복수) → who would signal.</span></li>
+            <li><span class="item">과거의 습관 would</span><span class="ex">would signal</span><span class="pt">★ '~하곤 했다' (과거 반복 습관). used to V와 유사하나 상태에는 불가.</span></li>
+            <li><span class="item">병렬 명사구 3개</span><span class="ex">changes ... , beginnings and endings, and transitions ...</span><span class="pt">★ signal의 목적어가 세 개 병치. and 위치 확인.</span></li>
+            <li><span class="item">4형식 → 3형식 (signal to + 사람)</span><span class="ex">signal to the group changes</span><span class="pt">★ signal A to B 또는 signal to B A. 본문은 후자 어순.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 3 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">③</span>Yet listening audiences are rarely aware of any musical leadership, and for good aesthetic reason.</div>
+          <div class="chunk">Yet listening audiences / 그러나 듣는 관객은 / are rarely aware of / 거의 인식하지 못한다 / any musical leadership, / 어떠한 음악적 리더십도 / and for good aesthetic reason. / 그것에는 좋은 미학적 이유가 있다</div>
+          <div class="ko-trans">그러나 듣는 관객은 어떠한 음악적 지휘에 대해서도 거의 인식하지 못하며, 거기에는 충분한 미학적 이유가 있다.</div>
+          <ul class="gram-list">
+            <li><span class="item">빈도부사 rarely</span><span class="ex">are rarely aware</span><span class="pt">★ '거의 ~하지 않다' (부정의 의미). be동사 뒤 위치.</span></li>
+            <li><span class="item">be aware of</span><span class="ex">aware of any musical leadership</span><span class="pt">★ '~을 인식하고 있다'. of 뒤 명사/동명사.</span></li>
+            <li><span class="item">현재분사 (능동·진행)</span><span class="ex">listening audiences</span><span class="pt">★ '듣고 있는 관객' (능동). 명사 앞 분사 수식.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 4 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">④</span>They need not be aware to fulfill their experience; indeed, the unnecessarily conspicuous presence of a musical leader will detract from it.</div>
+          <div class="chunk">They need not be aware / 그들은 인식할 필요가 없다 / to fulfill their experience; / 그들의 경험을 충족시키기 위해 / indeed, / 실제로 / the unnecessarily conspicuous presence / 불필요하게 두드러진 존재는 / of a musical leader / 음악적 지도자의 / will detract from it. / 그것을 저해할 것이다</div>
+          <div class="ko-trans">그들은 자신의 (감상) 경험을 충족시키기 위해 (지휘자를) 인식할 필요가 없다. 실제로 음악적 지도자의 불필요하게 두드러진 존재는 그 경험을 저해할 것이다.</div>
+          <ul class="gram-list">
+            <li><span class="item">조동사 need (부정)</span><span class="ex">need not be aware</span><span class="pt">★ need는 부정문/의문문에서 조동사로 쓰임. need not V 원형.</span></li>
+            <li><span class="item">to부정사 (목적)</span><span class="ex">to fulfill their experience</span><span class="pt">★ '~하기 위해' = in order to V.</span></li>
+            <li><span class="item">detract from</span><span class="ex">detract from it</span><span class="pt">★ '~의 가치를 떨어뜨리다, ~을 저해하다'. 빈출 동사구.</span></li>
+            <li><span class="item">대명사 it</span><span class="ex">detract from it</span><span class="pt">★ it = their experience (감상 경험).</span></li>
+          </ul>
+        </div>
+        <!-- 문장 5 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑤</span>An audience is better off, for the most part, taking in the whole of a stage work rather than being party to the techniques that go into realizing it.</div>
+          <div class="chunk">An audience is better off, / 관객은 ~하는 편이 더 낫다 / for the most part, / 대체로 / taking in the whole of a stage work / 무대 작품 전체를 받아들이는 것이 / rather than being party to / ~의 일원이 되기보다는 / the techniques / 기법들의 / that go into realizing it. / 그것을 구현하는 데 들어가는</div>
+          <div class="ko-trans">관객은 대체로, 무대 작품을 구현하는 데 들어가는 기법들에 관여하는 것보다는 무대 작품 전체를 받아들이는 편이 더 낫다.</div>
+          <ul class="gram-list">
+            <li><span class="item">be better off + V-ing</span><span class="ex">is better off ... taking in</span><span class="pt">★ '~하는 편이 더 낫다'. 뒤에 동명사 옴.</span></li>
+            <li><span class="item">A rather than B (병렬)</span><span class="ex">taking in ... rather than being party to</span><span class="pt">★ '~보다는 ~하다'. 두 동명사구 병치. 어법 빈출.</span></li>
+            <li><span class="item">be party to</span><span class="ex">being party to the techniques</span><span class="pt">★ '~에 관여하다, 일원이 되다'.</span></li>
+            <li><span class="item">주격 관계대명사 that</span><span class="ex">techniques that go into realizing</span><span class="pt">★ 선행사 techniques(복수) → go(복수동사). go into ~ing = '~에 사용/투입되다'.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 6 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑥</span>This is not to say that when an orchestra plays alone the audience members' eyes are not fixed on the conductor for the majority of the time; they probably are.</div>
+          <div class="chunk">This is not to say that / 이것은 ~라고 말하려는 것이 아니다 / when an orchestra plays alone / 오케스트라가 단독으로 연주할 때 / the audience members' eyes / 청중의 시선이 / are not fixed on the conductor / 지휘자에게 고정되지 않는다고 / for the majority of the time; / 대부분의 시간 동안 / they probably are. / 그들의 시선은 아마도 (고정되어 있을 것이다)</div>
+          <div class="ko-trans">이것은 오케스트라가 단독으로 연주할 때 청중의 시선이 대부분의 시간 동안 지휘자에게 고정되지 않는다고 말하려는 것은 아니다. 그들의 시선은 아마도 고정되어 있을 것이다.</div>
+          <ul class="gram-list">
+            <li><span class="item">This is not to say that ~</span><span class="ex">This is not to say that ...</span><span class="pt">★ '그렇다고 ~라는 말은 아니다'. 부분 부정 강조 구문.</span></li>
+            <li><span class="item">생략 (반복 회피)</span><span class="ex">they probably are (fixed on the conductor)</span><span class="pt">★ are 뒤 fixed on the conductor 생략. 비교/반복 회피.</span></li>
+            <li><span class="item">현재 수동태 (상태)</span><span class="ex">eyes are ... fixed on</span><span class="pt">★ '~에 고정되어 있다' = be fixed on. 상태의 수동.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 7 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑦</span>When music is accompanying something happening on stage, however, all eyes turn to the stage, and so do everyone's ears, too (including the music director's).</div>
+          <div class="chunk">When music is accompanying / 음악이 동반하고 있을 때 / something happening on stage, / 무대에서 일어나고 있는 어떤 것을 / however, / 그러나 / all eyes turn to the stage, / 모든 시선이 무대로 향한다 / and so do everyone's ears, too / 그리고 모두의 귀도 마찬가지이다 / (including the music director's). / (음악 감독의 것을 포함하여)</div>
+          <div class="ko-trans">그러나 음악이 무대에서 일어나고 있는 무언가에 동반될 때, 모든 시선이 무대로 향하고, 모두의 귀도 마찬가지로(음악 감독의 귀를 포함하여) 무대로 향한다.</div>
+          <ul class="gram-list">
+            <li><span class="item">현재분사 후치수식</span><span class="ex">something happening on stage</span><span class="pt">★ '무대에서 일어나고 있는 무언가'. -thing 대명사 + 분사.</span></li>
+            <li><span class="item">도치 구문 so + do/be + S</span><span class="ex">so do everyone's ears</span><span class="pt">★ '~도 또한 그렇다'. 앞 문장 동사 turn → do로 받아 도치. 어법 빈출.</span></li>
+            <li><span class="item">소유격 + 명사 생략</span><span class="ex">the music director's (ears)</span><span class="pt">★ 's 뒤 명사 ears 생략. 반복 회피.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ③ 핵심단어 -->
+      <div class="pane" id="t4-vocab">
+        <ul class="vocab-list">
+          <li class="vocab-item"><span class="vocab-word">direction</span><span class="vocab-pos">n.</span><span class="vocab-mean">지휘, 지시, 방향</span><span class="vocab-deriv">direct (v.), director (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">in the sense of</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~라는 의미에서</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">go back to</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~까지 거슬러 올라가다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">gamelan</span><span class="vocab-pos">n.</span><span class="vocab-mean">가믈란 (인도네시아 전통 합주)</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">signal</span><span class="vocab-pos">v./n.</span><span class="vocab-mean">신호를 보내다 / 신호</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">meter</span><span class="vocab-pos">n.</span><span class="vocab-mean">(음악) 박자, 운율</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">transition</span><span class="vocab-pos">n.</span><span class="vocab-mean">전환, 이행</span><span class="vocab-deriv">transit (v.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">rarely</span><span class="vocab-pos">adv.</span><span class="vocab-mean">거의 ~하지 않는</span><span class="vocab-deriv">rare (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">aware of</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~을 인식하는</span><span class="vocab-deriv">awareness (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">aesthetic</span><span class="vocab-pos">adj.</span><span class="vocab-mean">미학의, 미적인</span><span class="vocab-deriv">aesthetics (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">fulfill</span><span class="vocab-pos">v.</span><span class="vocab-mean">충족시키다, 완수하다</span><span class="vocab-deriv">fulfillment (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">conspicuous</span><span class="vocab-pos">adj.</span><span class="vocab-mean">눈에 띄는, 두드러진</span><span class="vocab-deriv">conspicuously (adv.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">detract from</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~의 가치를 떨어뜨리다, 저해하다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">be better off ~ing</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~하는 편이 더 낫다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">take in</span><span class="vocab-pos">phr.</span><span class="vocab-mean">받아들이다, 흡수하다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">for the most part</span><span class="vocab-pos">phr.</span><span class="vocab-mean">대체로, 대부분</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">be party to</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~에 관여하다, 일원이 되다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">realize</span><span class="vocab-pos">v.</span><span class="vocab-mean">구현하다, 실현하다</span><span class="vocab-deriv">realization (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">be fixed on</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~에 고정되어 있다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">accompany</span><span class="vocab-pos">v.</span><span class="vocab-mean">동반하다, 반주하다</span><span class="vocab-deriv">accompaniment (n.)</span></li>
+        </ul>
+      </div>
+
+      <!-- ④ 전문해석 -->
+      <div class="pane" id="t4-trans">
+        <div class="trans-box">
+          누군가가 음악 공연을 형성하고 이끈다는 의미의 '음악 지휘'라는 개념은 음악의 시초까지 거슬러 올라간다. 심지어 고대 인도네시아의 가믈란조차도 박자와 템포의 변화, 시작과 끝, 그리고 곡에서 곡으로의 전환을 그 그룹에게 신호로 알리곤 했던 지도자들을 두었다. 그러나 듣는 관객은 어떠한 음악적 지휘에 대해서도 거의 인식하지 못하며, 거기에는 충분한 미학적 이유가 있다. 그들은 자신의 (감상) 경험을 충족시키기 위해 (지휘자를) 인식할 필요가 없으며, 실제로 음악적 지도자의 불필요하게 두드러진 존재는 그 경험을 저해할 것이다. 관객은 대체로, 무대 작품을 구현하는 데 들어가는 기법들에 관여하는 것보다는 무대 작품 전체를 받아들이는 편이 더 낫다. 이것은 오케스트라가 단독으로 연주할 때 청중의 시선이 대부분의 시간 동안 지휘자에게 고정되지 않는다고 말하려는 것은 아니다. 그들의 시선은 아마도 고정되어 있을 것이다. 그러나 음악이 무대에서 일어나고 있는 무언가에 동반될 때, 모든 시선이 무대로 향하고, 모두의 귀도 마찬가지로(음악 감독의 귀를 포함하여) 무대로 향한다.
+        </div>
+      </div>
+
+      <!-- ⑤ 주제·요지 -->
+      <div class="pane" id="t4-topic">
+        <div class="topic-box">
+          <h3>주제 (Topic)</h3>
+          <div class="content">음악 지휘자의 존재가 청중에게 잘 드러나지 않아야 하는 미학적 이유</div>
+        </div>
+        <div class="topic-box">
+          <h3>요지 (Main Idea)</h3>
+          <div class="content">음악 지휘는 음악의 시초부터 존재해 왔지만, 청중은 그 존재를 거의 인식하지 못하며 또 그래야만 한다. 지휘자가 지나치게 두드러지면 오히려 감상을 방해하므로, 관객은 무대 작품 전체를 통째로 받아들이는 편이 낫다.</div>
+        </div>
+        <div class="topic-box">
+          <h3>구조 흐름 (Structure)</h3>
+          <ol class="struct-list">
+            <li>도입: 음악 지휘 개념의 기원 — 음악의 시초까지 거슬러 올라감</li>
+            <li>예시: 고대 인도네시아 가믈란에도 지도자가 존재했음</li>
+            <li>반전: 그러나 청중은 음악적 리더십을 거의 인식하지 못함 (미학적 이유)</li>
+            <li>핵심 논지: 지휘자가 두드러지면 감상 경험을 저해함</li>
+            <li>균형: 오케스트라 단독 연주에서는 지휘자에 시선이 가지만, 무대 공연 중에는 모든 시선과 귀가 무대로 향함</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- ⑥ 배경지식 -->
+      <div class="pane" id="t4-bg">
+        <div class="bg-section">
+          <h3>Gamelan (가믈란)</h3>
+          <p>가믈란은 인도네시아 자바·발리 지역의 전통 합주 음악으로, 청동 타악기(징·금속 실로폰·드럼 등)를 중심으로 한다. 본문이 강조하듯, 가믈란에는 'kendang'이라는 양면 북 연주자가 사실상 지휘자 역할을 하며, 박자와 템포의 변화·곡의 시작과 끝을 미세한 신호로 전달한다. 서양 지휘자처럼 손짓을 크게 하지 않고 연주의 일부로 녹아 있는 것이 특징이다.</p>
+        </div>
+        <div class="bg-section">
+          <h3>Music Direction vs. Conducting</h3>
+          <p>'Music director'와 'conductor'는 비슷하지만 다른 개념이다. Conductor는 오케스트라·합창단의 무대 위 지휘를 담당하는 사람이고, music director는 그 외에도 음악 전체의 해석, 프로그램 선정, 리허설 기획 등 더 폭넓은 역할을 한다. 뮤지컬·오페라·발레에서는 무대 공연을 음악적으로 통합·이끄는 역할로서 music director가 특히 중요하다.</p>
+        </div>
+        <div class="bg-section">
+          <h3>Aesthetic of Invisibility (보이지 않음의 미학)</h3>
+          <p>예술 매개에서 매개자(중개자)의 존재가 두드러지지 않을수록 작품 자체에 대한 몰입이 커진다는 미학적 원리이다. 영화의 'invisible editing(보이지 않는 편집)'이나 좋은 통역사의 '투명함'과 동일한 원리로, 본문은 이를 음악 지휘에 적용해 설명한다. 지휘자가 너무 화려한 동작으로 시선을 빼앗으면, 오히려 음악과 무대 자체에 대한 청중의 몰입을 저해한다.</p>
+        </div>
+      </div>
+
+      <!-- ⑦ 변형문제 -->
+      <div class="pane" id="t4-quiz">
+        <!-- Q1 주제추론 -->
+        <div class="quiz">
+          <span class="quiz-num">1. 주제 추론</span>
+          <div class="quiz-q">다음 글의 주제로 가장 적절한 것은?</div>
+          <ul class="opts">
+            <li onclick="check('q4-1',this,false)"><span class="onum">①</span>오케스트라 지휘자가 갖춰야 할 카리스마와 리더십</li>
+            <li onclick="check('q4-1',this,false)"><span class="onum">②</span>고대 인도네시아 가믈란 음악의 구조적 특징</li>
+            <li onclick="check('q4-1',this,true)"><span class="onum">③</span>청중의 감상을 위해 음악 지휘자의 존재가 두드러지지 않아야 하는 이유</li>
+            <li onclick="check('q4-1',this,false)"><span class="onum">④</span>관객이 지휘자를 통해 음악을 더 깊이 이해하는 방법</li>
+            <li onclick="check('q4-1',this,false)"><span class="onum">⑤</span>무대 공연에서 음악과 영상의 협업 방식</li>
+          </ul>
+          <div class="fb" id="fb-q4-1"></div>
+          <button class="reset-btn" onclick="resetQuiz('q4-1')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q2 빈칸추론 -->
+        <div class="quiz">
+          <span class="quiz-num">2. 빈칸 추론</span>
+          <div class="quiz-q">다음 빈칸에 들어갈 말로 가장 적절한 것은?</div>
+          <div class="quiz-passage">Yet listening audiences are rarely aware of any musical leadership, and for good aesthetic reason. They need not be aware to fulfill their experience; indeed, the unnecessarily conspicuous presence of a musical leader will <span class="blank">_______</span>.</div>
+          <ul class="opts">
+            <li onclick="check('q4-2',this,false)"><span class="onum">①</span>enhance their understanding of music</li>
+            <li onclick="check('q4-2',this,false)"><span class="onum">②</span>improve the technique of the orchestra</li>
+            <li onclick="check('q4-2',this,true)"><span class="onum">③</span>detract from it</li>
+            <li onclick="check('q4-2',this,false)"><span class="onum">④</span>strengthen their emotional connection</li>
+            <li onclick="check('q4-2',this,false)"><span class="onum">⑤</span>complete the performance</li>
+          </ul>
+          <div class="fb" id="fb-q4-2"></div>
+          <button class="reset-btn" onclick="resetQuiz('q4-2')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q3 어법오류 -->
+        <div class="quiz">
+          <span class="quiz-num">3. 어법 오류 찾기</span>
+          <div class="quiz-q">다음 글의 밑줄 친 부분 중 어법상 틀린 것은?</div>
+          <div class="quiz-passage">Even the gamelans of ancient Indonesia had leaders <u>①who</u> would signal to the group changes of meter and tempo. Yet listening audiences are rarely <u>②aware</u> of any musical leadership. An audience is better off, for the most part, <u>③taking</u> in the whole of a stage work rather than <u>④to be</u> party to the techniques. When music is accompanying something happening on stage, all eyes turn to the stage, and so <u>⑤do</u> everyone's ears.</div>
+          <ul class="opts">
+            <li onclick="check('q4-3',this,false)"><span class="onum">①</span>who</li>
+            <li onclick="check('q4-3',this,false)"><span class="onum">②</span>aware</li>
+            <li onclick="check('q4-3',this,false)"><span class="onum">③</span>taking</li>
+            <li onclick="check('q4-3',this,true)"><span class="onum">④</span>to be</li>
+            <li onclick="check('q4-3',this,false)"><span class="onum">⑤</span>do</li>
+          </ul>
+          <div class="fb" id="fb-q4-3"></div>
+          <button class="reset-btn" onclick="resetQuiz('q4-3')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q4 내용불일치 -->
+        <div class="quiz">
+          <span class="quiz-num">4. 내용 불일치</span>
+          <div class="quiz-q">윗글의 내용과 일치하지 <u>않는</u> 것은?</div>
+          <ul class="opts">
+            <li onclick="check('q4-4',this,false)"><span class="onum">①</span>음악 지휘 개념은 음악의 시초까지 거슬러 올라간다.</li>
+            <li onclick="check('q4-4',this,false)"><span class="onum">②</span>고대 가믈란에는 박자 변화를 신호로 알려주는 지도자가 있었다.</li>
+            <li onclick="check('q4-4',this,true)"><span class="onum">③</span>청중은 음악적 지휘자를 인식할수록 감상이 풍부해진다.</li>
+            <li onclick="check('q4-4',this,false)"><span class="onum">④</span>지휘자의 지나치게 두드러진 존재감은 청중의 감상 경험을 저해한다.</li>
+            <li onclick="check('q4-4',this,false)"><span class="onum">⑤</span>오케스트라 단독 연주 시에는 청중의 시선이 대부분 지휘자에게 향한다.</li>
+          </ul>
+          <div class="fb" id="fb-q4-4"></div>
+          <button class="reset-btn" onclick="resetQuiz('q4-4')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q5 글의 순서 -->
+        <div class="quiz">
+          <span class="quiz-num">5. 글의 순서</span>
+          <div class="quiz-q">주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?</div>
+          <div class="quiz-passage">The idea of music direction, in the sense of someone shaping and leading a musical performance, goes back to the beginnings of music.<br><br>(A) Yet listening audiences are rarely aware of any musical leadership, and for good aesthetic reason. They need not be aware to fulfill their experience; indeed, the unnecessarily conspicuous presence of a musical leader will detract from it.<br><br>(B) Even the gamelans of ancient Indonesia had leaders who would signal to the group changes of meter and tempo, beginnings and endings, and transitions from piece to piece.<br><br>(C) An audience is better off, for the most part, taking in the whole of a stage work rather than being party to the techniques that go into realizing it.</div>
+          <ul class="opts">
+            <li onclick="check('q4-5',this,false)"><span class="onum">①</span>(A) - (B) - (C)</li>
+            <li onclick="check('q4-5',this,false)"><span class="onum">②</span>(A) - (C) - (B)</li>
+            <li onclick="check('q4-5',this,true)"><span class="onum">③</span>(B) - (A) - (C)</li>
+            <li onclick="check('q4-5',this,false)"><span class="onum">④</span>(B) - (C) - (A)</li>
+            <li onclick="check('q4-5',this,false)"><span class="onum">⑤</span>(C) - (B) - (A)</li>
+          </ul>
+          <div class="fb" id="fb-q4-5"></div>
+          <button class="reset-btn" onclick="resetQuiz('q4-5')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- 서술형 1 -->
+        <div class="essay">
+          <span class="essay-num">서술형 1. 빈칸 요약</span>
+          <div class="essay-q">다음 빈칸 (A), (B)에 들어갈 말을 본문에서 찾아 쓰시오.</div>
+          <div class="essay-cond">조건: 본문 단어 활용. (A)는 한 단어 형용사, (B)는 한 단어 동사구.</div>
+          <div class="quiz-passage">Although music direction has existed since the beginnings of music, an unnecessarily (A) ________ leader can actually (B) ________ from the audience's experience.</div>
+          <textarea id="essay4-1" placeholder="(A): ________________  /  (B): ________________"></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay4-1')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans4-1')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay4-1"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans4-1"><b>모범답안</b>(A) conspicuous &nbsp; / &nbsp; (B) detract</div>
+        </div>
+
+        <!-- 서술형 2 -->
+        <div class="essay">
+          <span class="essay-num">서술형 2. 영작 서술</span>
+          <div class="essay-q">본문에 따르면, 음악이 무대 위 공연에 동반될 때와 오케스트라가 단독으로 연주할 때 청중의 시선이 어떻게 다른지 30단어 내외의 완전한 영어 문장으로 서술하시오.</div>
+          <div class="essay-cond">조건: ① 완전한 영어 문장 ② 30단어 내외 ③ 'stage', 'conductor' 단어 포함</div>
+          <textarea id="essay4-2" placeholder="Write your answer in English..."></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay4-2')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans4-2')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay4-2"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans4-2"><b>모범답안</b>When an orchestra plays alone, the audience's eyes are usually fixed on the conductor, but when music accompanies something on stage, all eyes turn to the stage instead.</div>
+        </div>
+
+        <!-- 서술형 3 -->
+        <div class="essay">
+          <span class="essay-num">서술형 3. 한국어 서술</span>
+          <div class="essay-q">필자는 왜 청중이 음악적 지휘자의 존재를 거의 인식하지 못하는 것이 바람직하다고 보는가? 본문 내용에 근거하여 한국어로 두 문장 이내로 서술하시오.</div>
+          <div class="essay-cond">조건: ① 한국어 ② 두 문장 이내 ③ '미학적 이유', '감상' 단어 포함</div>
+          <textarea id="essay4-3" placeholder="한국어로 답을 작성하세요..."></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay4-3')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans4-3')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay4-3"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans4-3"><b>모범답안</b>지휘자를 인식하지 않아도 감상 경험을 충분히 누릴 수 있고, 오히려 지휘자의 지나치게 두드러진 존재는 그 감상 경험을 저해할 수 있다는 미학적 이유 때문이다. 따라서 청중은 무대 작품 전체를 통째로 받아들이는 편이 더 낫다.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ Passage 5: 14-4 ============ -->
+    <div class="panel" id="p5">
+      <div class="passage-header">
+        <div class="pid">EBS-14 · Passage 4</div>
+        <h2>Prior Knowledge as the X-Factor in Reading</h2>
+        <div class="ko">독해에서 사전 지식이 차지하는 결정적 역할</div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('p5','t5-full',this)">① 전문</button>
+        <button class="tab" onclick="showTab('p5','t5-sent',this)">② 문장분석</button>
+        <button class="tab" onclick="showTab('p5','t5-vocab',this)">③ 핵심단어</button>
+        <button class="tab" onclick="showTab('p5','t5-trans',this)">④ 전문해석</button>
+        <button class="tab" onclick="showTab('p5','t5-topic',this)">⑤ 주제·요지</button>
+        <button class="tab" onclick="showTab('p5','t5-bg',this)">⑥ 배경지식</button>
+        <button class="tab" onclick="showTab('p5','t5-quiz',this)">⑦ 변형문제</button>
+      </div>
+
+      <!-- ① 전문 -->
+      <div class="pane active" id="t5-full">
+        <div class="full-passage">
+          <span class="snum">①</span>The importance of what a reader brings to the page is highlighted in a study discussed by Hirsch in The Knowledge Deficit.
+          <span class="snum">②</span>This study consisted of two groups of students who were asked to read a passage about baseball.
+          <span class="snum">③</span>The first group was made up of strong readers who knew little about baseball.
+          <span class="snum">④</span>The second group was composed of struggling readers who were knowledgeable about baseball.
+          <span class="snum">⑤</span>After reading the passage, students in each group had their comprehension tested.
+          <span class="snum">⑥</span>Guess which group scored higher?
+          <span class="snum">⑦</span>The struggling readers.
+          <span class="snum">⑧</span>Having strong reading skills was not enough for the students who came to the page with a knowledge deficit about the topic.
+          <span class="snum">⑨</span>Though the second group of readers were not strong readers, their prior knowledge enabled them to outscore readers with far better abilities.
+          <span class="snum">⑩</span>Prior knowledge, or, in the case of the good readers, the lack of prior knowledge, was the x-factor.
+        </div>
+      </div>
+
+      <!-- ② 문장분석 -->
+      <div class="pane" id="t5-sent">
+        <!-- 문장 1 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">①</span>The importance of what a reader brings to the page is highlighted in a study discussed by Hirsch in The Knowledge Deficit.</div>
+          <div class="chunk">The importance / 중요성은 / of what a reader brings to the page / 독자가 책 페이지에 가져오는 것의 / is highlighted / 강조된다 / in a study / 한 연구에서 / discussed by Hirsch / Hirsch에 의해 논의된 / in The Knowledge Deficit. / 'The Knowledge Deficit'에서</div>
+          <div class="ko-trans">독자가 책 페이지에 가져오는 것의 중요성은, Hirsch가 'The Knowledge Deficit'에서 논의한 한 연구에서 강조된다.</div>
+          <ul class="gram-list">
+            <li><span class="item">관계대명사 what</span><span class="ex">what a reader brings to the page</span><span class="pt">★ what = the thing(s) which. 선행사 포함 관계대명사, 명사절 역할.</span></li>
+            <li><span class="item">수동태</span><span class="ex">is highlighted in a study</span><span class="pt">★ '~에서 강조되다'. 행위자 by ~ 생략됨.</span></li>
+            <li><span class="item">과거분사 후치수식</span><span class="ex">a study discussed by Hirsch</span><span class="pt">★ which is discussed의 축약. 빈출.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 2 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">②</span>This study consisted of two groups of students who were asked to read a passage about baseball.</div>
+          <div class="chunk">This study consisted of / 이 연구는 ~으로 구성되었다 / two groups of students / 학생들의 두 집단 / who were asked / 요청받은 / to read a passage about baseball. / 야구에 관한 지문을 읽도록</div>
+          <div class="ko-trans">이 연구는 야구에 관한 지문을 읽도록 요청받은 학생들의 두 집단으로 구성되었다.</div>
+          <ul class="gram-list">
+            <li><span class="item">consist of (자동사·능동)</span><span class="ex">consisted of two groups</span><span class="pt">★ '~으로 구성되다'. 수동태 불가(be consisted of X). 어법 함정.</span></li>
+            <li><span class="item">주격 관계대명사 who</span><span class="ex">students who were asked</span><span class="pt">★ 선행사 students(복수·사람) → who were.</span></li>
+            <li><span class="item">ask + 사람 + to V (수동)</span><span class="ex">were asked to read</span><span class="pt">★ 5형식 동사 ask의 수동형. ask A to V → A be asked to V.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 3 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">③</span>The first group was made up of strong readers who knew little about baseball.</div>
+          <div class="chunk">The first group / 첫 번째 집단은 / was made up of / ~으로 구성되었다 / strong readers / 강한 독서가들 / who knew little about baseball. / 야구에 대해 거의 알지 못하는</div>
+          <div class="ko-trans">첫 번째 집단은 야구에 대해 거의 알지 못하는 강한 독서가들로 구성되었다.</div>
+          <ul class="gram-list">
+            <li><span class="item">be made up of</span><span class="ex">was made up of strong readers</span><span class="pt">★ '~로 구성되다' = consist of, be composed of. 동의 표현 빈출.</span></li>
+            <li><span class="item">수량 형용사 little</span><span class="ex">knew little about</span><span class="pt">★ '거의 알지 못했다' (부정적 의미). a little(약간)과 구분 필수.</span></li>
+            <li><span class="item">주격 관계대명사 who</span><span class="ex">readers who knew</span><span class="pt">★ 선행사 readers → who knew(복수동사).</span></li>
+          </ul>
+        </div>
+        <!-- 문장 4 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">④</span>The second group was composed of struggling readers who were knowledgeable about baseball.</div>
+          <div class="chunk">The second group / 두 번째 집단은 / was composed of / ~으로 구성되었다 / struggling readers / 어려움을 겪는 독서가들 / who were knowledgeable about baseball. / 야구에 대해 잘 아는</div>
+          <div class="ko-trans">두 번째 집단은 야구에 대해 잘 아는, 독서에 어려움을 겪는 독자들로 구성되었다.</div>
+          <ul class="gram-list">
+            <li><span class="item">be composed of</span><span class="ex">was composed of struggling readers</span><span class="pt">★ '~로 구성되다'. consist of / be made up of와 동의.</span></li>
+            <li><span class="item">현재분사 형용사</span><span class="ex">struggling readers</span><span class="pt">★ '어려움을 겪는 독자' (능동). who are struggling의 축약.</span></li>
+            <li><span class="item">be knowledgeable about</span><span class="ex">knowledgeable about baseball</span><span class="pt">★ '~에 대해 잘 아는'. about 다음 명사 옴.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 5 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑤</span>After reading the passage, students in each group had their comprehension tested.</div>
+          <div class="chunk">After reading the passage, / 지문을 읽은 후 / students in each group / 각 집단의 학생들은 / had their comprehension tested. / 그들의 이해도를 검사받았다</div>
+          <div class="ko-trans">지문을 읽은 후, 각 집단의 학생들은 그들의 이해도를 검사받았다.</div>
+          <ul class="gram-list">
+            <li><span class="item">분사구문 (시간)</span><span class="ex">After reading the passage</span><span class="pt">★ 접속사 After + 분사구. After they had read의 축약형.</span></li>
+            <li><span class="item">사역동사 have + O + p.p.</span><span class="ex">had their comprehension tested</span><span class="pt">★ 'O가 ~되도록 시키다/당하다'. 목적어와 행위 관계 수동. 빈출.</span></li>
+            <li><span class="item">each + 단수 명사</span><span class="ex">each group</span><span class="pt">★ each 뒤 단수 명사. 어법 함정 (each of + 복수명사).</span></li>
+          </ul>
+        </div>
+        <!-- 문장 6 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑥</span>Guess which group scored higher?</div>
+          <div class="chunk">Guess / 추측해 보라 / which group scored higher? / 어느 집단이 더 높은 점수를 얻었는지</div>
+          <div class="ko-trans">어느 집단이 더 높은 점수를 얻었는지 추측해 보라.</div>
+          <ul class="gram-list">
+            <li><span class="item">명령문 (Guess)</span><span class="ex">Guess which group ...</span><span class="pt">★ 동사원형으로 시작. 독자에게 호기심 유도하는 수사적 표현.</span></li>
+            <li><span class="item">간접의문문</span><span class="ex">which group scored higher</span><span class="pt">★ which group이 의문사+주어 역할 (의문형용사 which). 어순 그대로 평서문.</span></li>
+            <li><span class="item">비교급 (higher)</span><span class="ex">scored higher</span><span class="pt">★ '더 높이 점수를 얻다'. high의 비교급 (부사적 용법).</span></li>
+          </ul>
+        </div>
+        <!-- 문장 7 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑦</span>The struggling readers.</div>
+          <div class="chunk">The struggling readers. / 어려움을 겪는 독자들이었다</div>
+          <div class="ko-trans">바로 어려움을 겪는 독자들이었다.</div>
+          <ul class="gram-list">
+            <li><span class="item">생략 (답변 강조)</span><span class="ex">The struggling readers (scored higher).</span><span class="pt">★ 앞 질문의 답이므로 동사·목적어 생략. 강조 효과.</span></li>
+            <li><span class="item">정관사 the + 분사+명사</span><span class="ex">The struggling readers</span><span class="pt">★ 특정 집단을 가리키는 the. 본문 앞서 언급된 두 번째 집단.</span></li>
+            <li><span class="item">수사적 강조 기법</span><span class="ex">Guess which group ...? / The struggling readers.</span><span class="pt">★ 질문-답 단문 연속으로 독자의 주목 유도. 글쓰기 기법.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 8 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑧</span>Having strong reading skills was not enough for the students who came to the page with a knowledge deficit about the topic.</div>
+          <div class="chunk">Having strong reading skills / 강한 독해 능력을 가지고 있는 것은 / was not enough / 충분하지 않았다 / for the students / 학생들에게 / who came to the page / 책 페이지에 다가온 / with a knowledge deficit / 지식 결핍을 가지고 / about the topic. / 그 주제에 대한</div>
+          <div class="ko-trans">강한 독해 능력을 가지고 있다는 것은 그 주제에 대한 지식 결핍 상태로 페이지에 다가온 학생들에게는 충분하지 않았다.</div>
+          <ul class="gram-list">
+            <li><span class="item">동명사 주어</span><span class="ex">Having ... was not enough</span><span class="pt">★ 동명사구 주어 → 단수 동사 was. 수일치 빈출.</span></li>
+            <li><span class="item">주격 관계대명사 who</span><span class="ex">students who came to the page</span><span class="pt">★ 선행사 students → who came.</span></li>
+            <li><span class="item">전치사 with</span><span class="ex">with a knowledge deficit</span><span class="pt">★ '~을 가지고 / 지닌 채'. 부수 상태 표현.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 9 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑨</span>Though the second group of readers were not strong readers, their prior knowledge enabled them to outscore readers with far better abilities.</div>
+          <div class="chunk">Though the second group of readers / 비록 두 번째 집단의 독자들은 / were not strong readers, / 강한 독자들이 아니었지만 / their prior knowledge / 그들의 사전 지식이 / enabled them / 그들이 ~할 수 있게 했다 / to outscore readers / 독자들을 능가하는 점수를 받도록 / with far better abilities. / 훨씬 더 나은 능력을 가진</div>
+          <div class="ko-trans">비록 두 번째 집단의 독자들은 강한 독서가가 아니었지만, 그들의 사전 지식 덕분에 훨씬 더 뛰어난 능력을 가진 독자들을 능가하는 점수를 받을 수 있었다.</div>
+          <ul class="gram-list">
+            <li><span class="item">양보 접속사 Though</span><span class="ex">Though ... were not</span><span class="pt">★ '비록 ~이지만' = Although. 양보 부사절.</span></li>
+            <li><span class="item">enable + O + to V</span><span class="ex">enabled them to outscore</span><span class="pt">★ 'O가 ~할 수 있게 하다'. 5형식 동사. 무생물 주어 + enable 빈출.</span></li>
+            <li><span class="item">비교급 강조 far</span><span class="ex">far better abilities</span><span class="pt">★ far/much/even/still/a lot이 비교급 강조. very 불가.</span></li>
+          </ul>
+        </div>
+        <!-- 문장 10 -->
+        <div class="sent">
+          <div class="sent-en"><span class="badge">⑩</span>Prior knowledge, or, in the case of the good readers, the lack of prior knowledge, was the x-factor.</div>
+          <div class="chunk">Prior knowledge, / 사전 지식이 / or, in the case of the good readers, / 혹은 뛰어난 독자들의 경우에는 / the lack of prior knowledge, / 사전 지식의 부재가 / was the x-factor. / 결정적 변수였다</div>
+          <div class="ko-trans">사전 지식, 혹은 뛰어난 독자들의 경우에는 사전 지식의 부재가 결정적 변수(x-factor)였다.</div>
+          <ul class="gram-list">
+            <li><span class="item">동격 / 부연 설명</span><span class="ex">Prior knowledge, or ... the lack of prior knowledge</span><span class="pt">★ or가 '즉, 다시 말해'의 부연 설명 역할. 콤마로 동격 삽입구 형성.</span></li>
+            <li><span class="item">in the case of</span><span class="ex">in the case of the good readers</span><span class="pt">★ '~의 경우에'. 특정 상황 한정.</span></li>
+            <li><span class="item">주어-동사 수일치</span><span class="ex">Prior knowledge ... was</span><span class="pt">★ 핵심 주어 prior knowledge(단수) → was. 콤마 삽입구에 속지 말 것.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ③ 핵심단어 -->
+      <div class="pane" id="t5-vocab">
+        <ul class="vocab-list">
+          <li class="vocab-item"><span class="vocab-word">highlight</span><span class="vocab-pos">v.</span><span class="vocab-mean">강조하다, 부각시키다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">deficit</span><span class="vocab-pos">n.</span><span class="vocab-mean">부족, 결핍</span><span class="vocab-deriv">deficient (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">consist of</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~으로 구성되다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">passage</span><span class="vocab-pos">n.</span><span class="vocab-mean">(글의) 한 단락, 지문</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">be made up of</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~으로 구성되다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">be composed of</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~으로 구성되다</span><span class="vocab-deriv">composition (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">struggling</span><span class="vocab-pos">adj.</span><span class="vocab-mean">어려움을 겪는, 분투하는</span><span class="vocab-deriv">struggle (v./n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">knowledgeable</span><span class="vocab-pos">adj.</span><span class="vocab-mean">박식한, 잘 아는</span><span class="vocab-deriv">knowledge (n.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">comprehension</span><span class="vocab-pos">n.</span><span class="vocab-mean">이해(력)</span><span class="vocab-deriv">comprehend (v.), comprehensive (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">have O p.p.</span><span class="vocab-pos">phr.</span><span class="vocab-mean">O를 ~되게 하다 / 당하다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">score</span><span class="vocab-pos">v.</span><span class="vocab-mean">점수를 얻다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">prior</span><span class="vocab-pos">adj.</span><span class="vocab-mean">이전의, 사전의</span><span class="vocab-deriv">prior to (phr.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">enable A to V</span><span class="vocab-pos">phr.</span><span class="vocab-mean">A가 ~할 수 있게 하다</span><span class="vocab-deriv">enable (v.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">outscore</span><span class="vocab-pos">v.</span><span class="vocab-mean">~보다 더 높은 점수를 얻다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">far better</span><span class="vocab-pos">phr.</span><span class="vocab-mean">훨씬 더 나은 (비교급 강조)</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">ability</span><span class="vocab-pos">n.</span><span class="vocab-mean">능력</span><span class="vocab-deriv">able (adj.)</span></li>
+          <li class="vocab-item"><span class="vocab-word">in the case of</span><span class="vocab-pos">phr.</span><span class="vocab-mean">~의 경우에</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">lack</span><span class="vocab-pos">n./v.</span><span class="vocab-mean">부족, 결핍 / 부족하다</span><span class="vocab-deriv">—</span></li>
+          <li class="vocab-item"><span class="vocab-word">x-factor</span><span class="vocab-pos">n.</span><span class="vocab-mean">결정적인 미지의 요인, 핵심 변수</span><span class="vocab-deriv">—</span></li>
+        </ul>
+      </div>
+
+      <!-- ④ 전문해석 -->
+      <div class="pane" id="t5-trans">
+        <div class="trans-box">
+          독자가 책 페이지에 가져오는 것의 중요성은 Hirsch가 'The Knowledge Deficit'에서 논의한 한 연구에서 강조된다. 이 연구는 야구에 관한 지문을 읽도록 요청받은 학생들의 두 집단으로 구성되었다. 첫 번째 집단은 야구에 대해 거의 알지 못하는 강한 독서가들로 구성되었다. 두 번째 집단은 야구에 대해 잘 아는, 독서에 어려움을 겪는 독자들로 구성되었다. 지문을 읽은 후, 각 집단의 학생들은 그들의 이해도를 검사받았다. 어느 집단이 더 높은 점수를 얻었는지 추측해 보라. 바로 어려움을 겪는 독자들이었다. 강한 독해 능력을 가지고 있다는 것은 그 주제에 대한 지식 결핍 상태로 페이지에 다가온 학생들에게는 충분하지 않았다. 비록 두 번째 집단의 독자들은 강한 독서가가 아니었지만, 그들의 사전 지식 덕분에 훨씬 더 뛰어난 능력을 가진 독자들을 능가하는 점수를 받을 수 있었다. 사전 지식, 혹은 뛰어난 독자들의 경우에는 사전 지식의 부재가 결정적 변수(x-factor)였다.
+        </div>
+      </div>
+
+      <!-- ⑤ 주제·요지 -->
+      <div class="pane" id="t5-topic">
+        <div class="topic-box">
+          <h3>주제 (Topic)</h3>
+          <div class="content">독해 능력보다 더 결정적인 변수로서의 '사전 지식'의 중요성</div>
+        </div>
+        <div class="topic-box">
+          <h3>요지 (Main Idea)</h3>
+          <div class="content">Hirsch가 소개한 연구는 독해력이 강해도 주제에 대한 사전 지식이 부족하면 충분하지 않고, 오히려 독해력이 약하더라도 풍부한 사전 지식을 가진 학생이 더 높은 이해도 점수를 받는다는 것을 보여준다. 따라서 독해의 결정적 변수(x-factor)는 사전 지식이다.</div>
+        </div>
+        <div class="topic-box">
+          <h3>구조 흐름 (Structure)</h3>
+          <ol class="struct-list">
+            <li>도입: Hirsch가 'The Knowledge Deficit'에서 인용한 연구 소개</li>
+            <li>실험 설계: 강한 독서가(야구 무지) vs. 약한 독서가(야구 잘 앎) — 두 집단으로 구성</li>
+            <li>실험 절차: 야구 지문을 읽고 이해도 검사</li>
+            <li>결과 제시(수사적 질문): "어려움을 겪는 독자들"이 더 높은 점수</li>
+            <li>해석: 강한 독해 능력만으로는 부족, 사전 지식이 점수를 가른다</li>
+            <li>결론: 사전 지식(또는 사전 지식의 부재)이 독해의 'x-factor'</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- ⑥ 배경지식 -->
+      <div class="pane" id="t5-bg">
+        <div class="bg-section">
+          <h3>E. D. Hirsch와 The Knowledge Deficit</h3>
+          <p>E. D. Hirsch, Jr.는 미국의 교육이론가이자 'Cultural Literacy(문화 리터러시)' 개념의 창시자이다. 2006년 저서 'The Knowledge Deficit'에서 그는 미국 학생들의 독해력 저하 원인이 단순한 기능적 독해 기술 부족이 아니라 폭넓은 배경지식의 결핍이라고 주장했다. 본문이 인용한 야구 실험은 이 주장의 핵심 근거 중 하나로 자주 인용된다.</p>
+        </div>
+        <div class="bg-section">
+          <h3>Schema Theory and Reading (스키마 이론과 독해)</h3>
+          <p>인지심리학의 스키마 이론에 따르면, 독해는 단순히 단어를 해독하는 과정이 아니라 독자의 머릿속에 이미 존재하는 지식 구조(스키마)에 새 정보를 통합하는 능동적 구성 과정이다. 야구에 대한 스키마(이닝, 타자, 투수, 베이스 등)가 풍부한 독자는 본문의 단서를 빠르게 연결해 이해를 완성하지만, 스키마가 없는 독자는 단어를 다 알아도 의미 구성을 못 한다.</p>
+        </div>
+        <div class="bg-section">
+          <h3>The Baseball Study (야구 실험)</h3>
+          <p>본문에 언급된 실험은 1988년 Recht & Leslie가 수행한 고전적 연구이다. 7-8학년 학생을 독해력(상/하)과 야구 지식(상/하)으로 4그룹으로 나누어 야구 지문을 읽힌 결과, "독해력 낮음 + 야구 지식 높음" 그룹이 "독해력 높음 + 야구 지식 낮음" 그룹보다 이해도 점수가 더 높았다. 이는 사전 지식이 독해 성취의 핵심 결정 요인임을 보여주는 교육심리학의 표준 사례가 되었다.</p>
+        </div>
+      </div>
+
+      <!-- ⑦ 변형문제 -->
+      <div class="pane" id="t5-quiz">
+        <!-- Q1 주제추론 -->
+        <div class="quiz">
+          <span class="quiz-num">1. 주제 추론</span>
+          <div class="quiz-q">다음 글의 주제로 가장 적절한 것은?</div>
+          <ul class="opts">
+            <li onclick="check('q5-1',this,false)"><span class="onum">①</span>야구를 좋아하는 학생들의 학업 성취도 분석</li>
+            <li onclick="check('q5-1',this,false)"><span class="onum">②</span>독해 능력을 키우기 위한 효과적인 학습법</li>
+            <li onclick="check('q5-1',this,true)"><span class="onum">③</span>독해에서 사전 지식이 결정적 변수가 되는 이유</li>
+            <li onclick="check('q5-1',this,false)"><span class="onum">④</span>Hirsch의 교육 이론과 비판적 사고의 관계</li>
+            <li onclick="check('q5-1',this,false)"><span class="onum">⑤</span>이해도 검사가 학생 평가에서 갖는 한계</li>
+          </ul>
+          <div class="fb" id="fb-q5-1"></div>
+          <button class="reset-btn" onclick="resetQuiz('q5-1')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q2 빈칸추론 -->
+        <div class="quiz">
+          <span class="quiz-num">2. 빈칸 추론</span>
+          <div class="quiz-q">다음 빈칸에 들어갈 말로 가장 적절한 것은?</div>
+          <div class="quiz-passage">Though the second group of readers were not strong readers, their prior knowledge enabled them to outscore readers with far better abilities. Prior knowledge, or, in the case of the good readers, the lack of prior knowledge, was the <span class="blank">_______</span>.</div>
+          <ul class="opts">
+            <li onclick="check('q5-2',this,false)"><span class="onum">①</span>biggest obstacle</li>
+            <li onclick="check('q5-2',this,false)"><span class="onum">②</span>final reward</li>
+            <li onclick="check('q5-2',this,false)"><span class="onum">③</span>chance variable</li>
+            <li onclick="check('q5-2',this,true)"><span class="onum">④</span>x-factor</li>
+            <li onclick="check('q5-2',this,false)"><span class="onum">⑤</span>cultural marker</li>
+          </ul>
+          <div class="fb" id="fb-q5-2"></div>
+          <button class="reset-btn" onclick="resetQuiz('q5-2')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q3 어법오류 -->
+        <div class="quiz">
+          <span class="quiz-num">3. 어법 오류 찾기</span>
+          <div class="quiz-q">다음 글의 밑줄 친 부분 중 어법상 틀린 것은?</div>
+          <div class="quiz-passage">The importance of what a reader brings to the page <u>①is</u> highlighted in a study discussed by Hirsch. This study <u>②was consisted of</u> two groups of students who were asked to read a passage about baseball. After reading the passage, students in each group had their comprehension <u>③tested</u>. Though the second group of readers were not strong readers, their prior knowledge enabled them <u>④to outscore</u> readers with <u>⑤far</u> better abilities.</div>
+          <ul class="opts">
+            <li onclick="check('q5-3',this,false)"><span class="onum">①</span>is</li>
+            <li onclick="check('q5-3',this,true)"><span class="onum">②</span>was consisted of</li>
+            <li onclick="check('q5-3',this,false)"><span class="onum">③</span>tested</li>
+            <li onclick="check('q5-3',this,false)"><span class="onum">④</span>to outscore</li>
+            <li onclick="check('q5-3',this,false)"><span class="onum">⑤</span>far</li>
+          </ul>
+          <div class="fb" id="fb-q5-3"></div>
+          <button class="reset-btn" onclick="resetQuiz('q5-3')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q4 내용불일치 -->
+        <div class="quiz">
+          <span class="quiz-num">4. 내용 불일치</span>
+          <div class="quiz-q">윗글의 내용과 일치하지 <u>않는</u> 것은?</div>
+          <ul class="opts">
+            <li onclick="check('q5-4',this,false)"><span class="onum">①</span>이 연구는 Hirsch의 책 'The Knowledge Deficit'에서 논의되었다.</li>
+            <li onclick="check('q5-4',this,false)"><span class="onum">②</span>첫 번째 집단은 야구를 잘 모르는 강한 독서가들로 구성되었다.</li>
+            <li onclick="check('q5-4',this,false)"><span class="onum">③</span>두 번째 집단은 독해에 어려움을 겪지만 야구를 잘 아는 학생들이었다.</li>
+            <li onclick="check('q5-4',this,true)"><span class="onum">④</span>이해도 검사 결과 첫 번째 집단이 더 높은 점수를 받았다.</li>
+            <li onclick="check('q5-4',this,false)"><span class="onum">⑤</span>독해 성취에서 결정적 변수는 사전 지식이라고 결론짓는다.</li>
+          </ul>
+          <div class="fb" id="fb-q5-4"></div>
+          <button class="reset-btn" onclick="resetQuiz('q5-4')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- Q5 글의 순서 -->
+        <div class="quiz">
+          <span class="quiz-num">5. 글의 순서</span>
+          <div class="quiz-q">주어진 글 다음에 이어질 글의 순서로 가장 적절한 것은?</div>
+          <div class="quiz-passage">The importance of what a reader brings to the page is highlighted in a study discussed by Hirsch in The Knowledge Deficit.<br><br>(A) Guess which group scored higher? The struggling readers. Having strong reading skills was not enough for the students who came to the page with a knowledge deficit about the topic.<br><br>(B) This study consisted of two groups of students who were asked to read a passage about baseball. The first group was made up of strong readers who knew little about baseball. The second group was composed of struggling readers who were knowledgeable about baseball.<br><br>(C) After reading the passage, students in each group had their comprehension tested.</div>
+          <ul class="opts">
+            <li onclick="check('q5-5',this,false)"><span class="onum">①</span>(A) - (B) - (C)</li>
+            <li onclick="check('q5-5',this,false)"><span class="onum">②</span>(A) - (C) - (B)</li>
+            <li onclick="check('q5-5',this,false)"><span class="onum">③</span>(B) - (A) - (C)</li>
+            <li onclick="check('q5-5',this,true)"><span class="onum">④</span>(B) - (C) - (A)</li>
+            <li onclick="check('q5-5',this,false)"><span class="onum">⑤</span>(C) - (A) - (B)</li>
+          </ul>
+          <div class="fb" id="fb-q5-5"></div>
+          <button class="reset-btn" onclick="resetQuiz('q5-5')">↺ 다시 풀기</button>
+        </div>
+
+        <!-- 서술형 1 -->
+        <div class="essay">
+          <span class="essay-num">서술형 1. 빈칸 요약</span>
+          <div class="essay-q">다음 빈칸 (A), (B)에 들어갈 말을 본문에서 찾아 쓰시오.</div>
+          <div class="essay-cond">조건: 본문 단어 활용. (A)는 두 단어, (B)는 한 단어.</div>
+          <div class="quiz-passage">Hirsch's study shows that (A) ________ ________ about the topic, rather than reading ability, was the (B) ________ that determined how well students understood a passage.</div>
+          <textarea id="essay5-1" placeholder="(A): ________________  /  (B): ________________"></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay5-1')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans5-1')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay5-1"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans5-1"><b>모범답안</b>(A) prior knowledge &nbsp; / &nbsp; (B) x-factor</div>
+        </div>
+
+        <!-- 서술형 2 -->
+        <div class="essay">
+          <span class="essay-num">서술형 2. 영작 서술</span>
+          <div class="essay-q">본문의 연구에서 두 집단의 구성과 그 결과를 30~40단어의 완전한 영어 문장으로 요약하여 서술하시오.</div>
+          <div class="essay-cond">조건: ① 완전한 영어 문장 ② 30~40단어 ③ 'strong readers', 'struggling readers', 'prior knowledge' 표현 포함</div>
+          <textarea id="essay5-2" placeholder="Write your answer in English..."></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay5-2')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans5-2')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay5-2"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans5-2"><b>모범답안</b>In the study, strong readers with little baseball knowledge were compared with struggling readers who knew much about baseball, and the struggling readers scored higher because their prior knowledge enabled them to understand the passage better.</div>
+        </div>
+
+        <!-- 서술형 3 -->
+        <div class="essay">
+          <span class="essay-num">서술형 3. 한국어 서술</span>
+          <div class="essay-q">본문의 마지막 문장 "Prior knowledge ... was the x-factor."가 의미하는 바를 한국어로 두 문장 이내로 서술하시오.</div>
+          <div class="essay-cond">조건: ① 한국어 ② 두 문장 이내 ③ '사전 지식', '독해력', '결정적' 단어 포함</div>
+          <textarea id="essay5-3" placeholder="한국어로 답을 작성하세요..."></textarea>
+          <div class="essay-btns">
+            <button class="submit-btn" onclick="submitEssay('essay5-3')">제출</button>
+            <button class="ans-btn" onclick="toggleAns('ans5-3')">모범답안 보기</button>
+          </div>
+          <div class="user-ans-display" id="user-essay5-3"><b>내가 작성한 답:</b><span></span></div>
+          <div class="essay-ans" id="ans5-3"><b>모범답안</b>지문 내용의 이해도를 가르는 결정적 변수는 독해력이 아니라 그 주제에 대한 사전 지식이었다. 즉, 강한 독해력을 가졌더라도 사전 지식이 부족하면 부족한 사전 지식 자체가 이해도를 떨어뜨리는 결정적 요인이 된다는 의미이다.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// Toggle sidebar (mobile)
+function toggleSidebar(){
+  var sb = document.getElementById('sidebar');
+  if(sb.className.indexOf('open') > -1){
+    sb.className = 'sidebar';
+  } else {
+    sb.className = 'sidebar open';
+  }
+}
+
+// Switch passage (sidebar navigation)
+function showPassage(n, el){
+  // hide all panels
+  var panels = document.getElementsByClassName('panel');
+  for(var i=0;i<panels.length;i++){
+    panels[i].className = 'panel';
+  }
+  // show selected
+  var target = document.getElementById('p' + n);
+  if(target){
+    target.className = 'panel active';
+  }
+  // update nav
+  var navs = document.querySelectorAll('.sidebar a');
+  for(var j=0;j<navs.length;j++){
+    navs[j].className = '';
+  }
+  if(el){
+    el.className = 'active';
+  }
+  // close sidebar on mobile
+  if(window.innerWidth <= 900){
+    var sb = document.getElementById('sidebar');
+    sb.className = 'sidebar';
+  }
+  // scroll to top
+  window.scrollTo(0,0);
+}
+
+// Switch tab within a panel
+function showTab(panelId, paneId, el){
+  var panel = document.getElementById(panelId);
+  if(!panel) return;
+  // hide all panes in this panel
+  var panes = panel.getElementsByClassName('pane');
+  for(var i=0;i<panes.length;i++){
+    panes[i].className = 'pane';
+  }
+  // show selected pane
+  var pane = document.getElementById(paneId);
+  if(pane){
+    pane.className = 'pane active';
+  }
+  // update tabs in this panel
+  var tabs = panel.getElementsByClassName('tab');
+  for(var j=0;j<tabs.length;j++){
+    tabs[j].className = 'tab';
+  }
+  if(el){
+    el.className = 'tab active';
+  }
+}
+
+// Check quiz answer
+function check(qId, btn, isCorrect){
+  var fb = document.getElementById('fb-' + qId);
+  if(!fb) return;
+  // disable all options for this question
+  var ul = btn.parentNode;
+  var lis = ul.getElementsByTagName('li');
+  for(var i=0;i<lis.length;i++){
+    lis[i].onclick = null;
+    lis[i].style.cursor = 'default';
+  }
+  if(isCorrect){
+    btn.className = 'correct';
+    fb.className = 'fb show ok';
+    fb.innerHTML = '✓ 정답입니다!';
+  } else {
+    btn.className = 'wrong';
+    // find correct one and highlight
+    for(var k=0;k<lis.length;k++){
+      var li = lis[k];
+      // we need to know which is correct: check inline onclick string
+      var onclickStr = li.getAttribute('onclick') || '';
+      if(onclickStr.indexOf('true') > -1){
+        li.className = 'correct';
+      }
+    }
+    fb.className = 'fb show ng';
+    fb.innerHTML = '✗ 오답입니다. 정답은 위에 표시된 ✓ 선택지입니다.';
+  }
+}
+
+// Reset a quiz
+function resetQuiz(qId){
+  var fb = document.getElementById('fb-' + qId);
+  if(fb){
+    fb.className = 'fb';
+    fb.innerHTML = '';
+  }
+  // find the quiz container by the feedback element
+  if(!fb) return;
+  var quizDiv = fb.parentNode;
+  var ul = quizDiv.getElementsByTagName('ul')[0];
+  if(!ul) return;
+  var lis = ul.getElementsByTagName('li');
+  for(var i=0;i<lis.length;i++){
+    lis[i].className = '';
+    lis[i].style.cursor = 'pointer';
+    // restore onclick from attribute
+    var onclickStr = lis[i].getAttribute('onclick');
+    if(onclickStr){
+      lis[i].setAttribute('onclick', onclickStr);
+    }
+  }
+  // rebind by reading the original onclick attribute (already set in HTML)
+  // Since we removed JS onclick property, we need to use the attribute version which persists.
+  // The attribute version remains because we used onclick="..." in HTML.
+}
+
+// Toggle model answer
+function toggleAns(id){
+  var el = document.getElementById(id);
+  if(!el) return;
+  if(el.className.indexOf('show') > -1){
+    el.className = 'essay-ans';
+  } else {
+    el.className = 'essay-ans show';
+  }
+}
+
+// Submit essay answer (display user input)
+function submitEssay(textareaId){
+  var ta = document.getElementById(textareaId);
+  if(!ta) return;
+  var userText = ta.value.trim();
+  var displayId = 'user-' + textareaId;
+  var display = document.getElementById(displayId);
+  if(!display) return;
+  if(userText === ''){
+    alert('답을 먼저 작성해 주세요.');
+    return;
+  }
+  var span = display.getElementsByTagName('span')[0];
+  if(span){
+    span.innerHTML = '<br>' + userText.replace(/\n/g, '<br>');
+  }
+  display.className = 'user-ans-display show';
+}
+</script>
+
+</body>
+</html>
+
